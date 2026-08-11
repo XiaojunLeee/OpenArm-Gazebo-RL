@@ -1,0 +1,441 @@
+===== OpenArm SAC 训练日志 =====
+开始时间: 2026-08-11T09:58:27+08:00
+工作目录: /home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_SAC
+Python: /home/xiaojun/miniforge3/envs/openarm/bin/python
+命令: python -u scripts/train_sac.py
+自动续训: 开启（存在兼容检查点时自动读取）
+日志文件: /home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_SAC/sac_results/logs/training.log
+================================
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+[自动续训] 已读取：/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_SAC/sac_results/models/interrupt_checkpoint
+[自动续训] 从 Episode 918 继续；已完成=917/1000，总环境步=11580，上次完成验证=900
+Logging to /home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_SAC/sac_results/tensorboard/SAC_0
+[训练] Episode 918/1000 | 训练集seed=100 | 孔索引=447 | 孔位置YZ(相对复位轴尖)=(-1.214, -1.838) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.110 | 搜索步=7 | 搜索时间=0.35 s | YZ路径=79.30 mm
+[训练] Episode 919/1000 | 训练集seed=100 | 孔索引=44 | 孔位置YZ(相对复位轴尖)=(1.562, 2.490) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.070 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=42.22 mm
+[训练] Episode 920/1000 | 训练集seed=100 | 孔索引=805 | 孔位置YZ(相对复位轴尖)=(-2.383, 0.887) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.250 | 搜索步=8 | 搜索时间=0.40 s | YZ路径=45.97 mm
+[训练] Episode 921/1000 | 训练集seed=100 | 孔索引=262 | 孔位置YZ(相对复位轴尖)=(-0.285, -1.066) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.000 | 搜索步=16 | 搜索时间=0.80 s | YZ路径=234.40 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 6.86     |
+|    ep_rew_mean     | 37.7     |
+| time/              |          |
+|    episodes        | 912      |
+|    fps             | 0        |
+|    time_elapsed    | 101      |
+|    total_timesteps | 11618    |
+| train/             |          |
+|    actor_loss      | -34      |
+|    critic_loss     | 139      |
+|    ent_coef        | 0.213    |
+|    ent_coef_loss   | -1.02    |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6607     |
+---------------------------------
+[训练] Episode 922/1000 | 训练集seed=100 | 孔索引=524 | 孔位置YZ(相对复位轴尖)=(-2.885, 1.244) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=19.890 | 搜索步=15 | 搜索时间=0.75 s | YZ路径=127.39 mm
+[训练] Episode 923/1000 | 训练集seed=100 | 孔索引=864 | 孔位置YZ(相对复位轴尖)=(2.607, -1.062) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.030 | 搜索步=6 | 搜索时间=0.30 s | YZ路径=42.64 mm
+[训练] Episode 924/1000 | 训练集seed=100 | 孔索引=454 | 孔位置YZ(相对复位轴尖)=(2.985, 2.890) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.080 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=50.34 mm
+[训练] Episode 925/1000 | 训练集seed=100 | 孔索引=13 | 孔位置YZ(相对复位轴尖)=(1.149, -0.549) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.040 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=9.06 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 7.05     |
+|    ep_rew_mean     | 38       |
+| time/              |          |
+|    episodes        | 916      |
+|    fps             | 0        |
+|    time_elapsed    | 202      |
+|    total_timesteps | 11645    |
+| train/             |          |
+|    actor_loss      | -35.6    |
+|    critic_loss     | 136      |
+|    ent_coef        | 0.212    |
+|    ent_coef_loss   | -0.941   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6634     |
+---------------------------------
+[训练] Episode 926/1000 | 训练集seed=100 | 孔索引=418 | 孔位置YZ(相对复位轴尖)=(-2.614, 1.454) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.220 | 搜索步=16 | 搜索时间=0.80 s | YZ路径=214.38 mm
+[训练] Episode 927/1000 | 训练集seed=100 | 孔索引=67 | 孔位置YZ(相对复位轴尖)=(2.351, -0.731) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.510 | 搜索步=21 | 搜索时间=1.05 s | YZ路径=149.00 mm
+[训练] Episode 928/1000 | 训练集seed=100 | 孔索引=385 | 孔位置YZ(相对复位轴尖)=(-1.287, -0.901) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.080 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=12.47 mm
+[训练] Episode 929/1000 | 训练集seed=100 | 孔索引=760 | 孔位置YZ(相对复位轴尖)=(-1.537, 1.112) mm | 找孔=True | 完整装配=False | 结束原因=fault | 回合奖励=-9.880 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=47.44 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 7.27     |
+|    ep_rew_mean     | 38.7     |
+| time/              |          |
+|    episodes        | 920      |
+|    fps             | 0        |
+|    time_elapsed    | 301      |
+|    total_timesteps | 11691    |
+| train/             |          |
+|    actor_loss      | -38      |
+|    critic_loss     | 184      |
+|    ent_coef        | 0.21     |
+|    ent_coef_loss   | -0.598   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6680     |
+---------------------------------
+[训练] Episode 930/1000 | 训练集seed=100 | 孔索引=878 | 孔位置YZ(相对复位轴尖)=(-1.526, 0.665) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.120 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=55.34 mm
+[训练] Episode 931/1000 | 训练集seed=100 | 孔索引=986 | 孔位置YZ(相对复位轴尖)=(1.313, 2.332) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.080 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=38.58 mm
+[训练] Episode 932/1000 | 训练集seed=100 | 孔索引=42 | 孔位置YZ(相对复位轴尖)=(1.379, 0.043) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.070 | 搜索步=14 | 搜索时间=0.70 s | YZ路径=171.48 mm
+[训练] Episode 933/1000 | 训练集seed=100 | 孔索引=750 | 孔位置YZ(相对复位轴尖)=(1.584, 1.172) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.000 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=2.21 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 7.26     |
+|    ep_rew_mean     | 39.7     |
+| time/              |          |
+|    episodes        | 924      |
+|    fps             | 0        |
+|    time_elapsed    | 417      |
+|    total_timesteps | 11714    |
+| train/             |          |
+|    actor_loss      | -31.5    |
+|    critic_loss     | 118      |
+|    ent_coef        | 0.209    |
+|    ent_coef_loss   | -1.11    |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6703     |
+---------------------------------
+[训练] Episode 934/1000 | 训练集seed=100 | 孔索引=192 | 孔位置YZ(相对复位轴尖)=(0.516, 2.923) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.040 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=9.03 mm
+[训练] Episode 935/1000 | 训练集seed=100 | 孔索引=277 | 孔位置YZ(相对复位轴尖)=(-2.791, 1.810) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.050 | 搜索步=8 | 搜索时间=0.40 s | YZ路径=79.79 mm
+[训练] Episode 936/1000 | 训练集seed=100 | 孔索引=129 | 孔位置YZ(相对复位轴尖)=(2.365, 0.107) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.120 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=29.96 mm
+[训练] Episode 937/1000 | 训练集seed=100 | 孔索引=598 | 孔位置YZ(相对复位轴尖)=(0.251, -1.746) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.040 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=41.38 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 7.27     |
+|    ep_rew_mean     | 38.7     |
+| time/              |          |
+|    episodes        | 928      |
+|    fps             | 0        |
+|    time_elapsed    | 510      |
+|    total_timesteps | 11731    |
+| train/             |          |
+|    actor_loss      | -33.3    |
+|    critic_loss     | 145      |
+|    ent_coef        | 0.209    |
+|    ent_coef_loss   | -0.864   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6720     |
+---------------------------------
+[训练] Episode 938/1000 | 训练集seed=100 | 孔索引=664 | 孔位置YZ(相对复位轴尖)=(0.292, -1.117) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.000 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=1.25 mm
+[训练] Episode 939/1000 | 训练集seed=100 | 孔索引=407 | 孔位置YZ(相对复位轴尖)=(1.727, -0.340) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.070 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=56.75 mm
+[训练] Episode 940/1000 | 训练集seed=100 | 孔索引=921 | 孔位置YZ(相对复位轴尖)=(-2.301, -1.586) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.000 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=2.39 mm
+[训练] Episode 941/1000 | 训练集seed=100 | 孔索引=629 | 孔位置YZ(相对复位轴尖)=(-1.610, -0.619) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.000 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=2.58 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 7.09     |
+|    ep_rew_mean     | 40       |
+| time/              |          |
+|    episodes        | 932      |
+|    fps             | 0        |
+|    time_elapsed    | 611      |
+|    total_timesteps | 11738    |
+| train/             |          |
+|    actor_loss      | -34.5    |
+|    critic_loss     | 151      |
+|    ent_coef        | 0.209    |
+|    ent_coef_loss   | -0.41    |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6727     |
+---------------------------------
+[训练] Episode 942/1000 | 训练集seed=100 | 孔索引=246 | 孔位置YZ(相对复位轴尖)=(2.105, -0.444) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.320 | 搜索步=15 | 搜索时间=0.75 s | YZ路径=176.94 mm
+[训练] Episode 943/1000 | 训练集seed=100 | 孔索引=401 | 孔位置YZ(相对复位轴尖)=(-0.517, 0.804) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.080 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=36.26 mm
+[训练] Episode 944/1000 | 训练集seed=100 | 孔索引=956 | 孔位置YZ(相对复位轴尖)=(1.514, -2.164) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.120 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=16.69 mm
+[训练] Episode 945/1000 | 训练集seed=100 | 孔索引=465 | 孔位置YZ(相对复位轴尖)=(0.321, 1.794) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.060 | 搜索步=4 | 搜索时间=0.20 s | YZ路径=62.79 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 7.08     |
+|    ep_rew_mean     | 41.6     |
+| time/              |          |
+|    episodes        | 936      |
+|    fps             | 0        |
+|    time_elapsed    | 707      |
+|    total_timesteps | 11765    |
+| train/             |          |
+|    actor_loss      | -34.2    |
+|    critic_loss     | 120      |
+|    ent_coef        | 0.208    |
+|    ent_coef_loss   | -0.625   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6754     |
+---------------------------------
+[训练] Episode 946/1000 | 训练集seed=100 | 孔索引=729 | 孔位置YZ(相对复位轴尖)=(2.718, -1.530) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.170 | 搜索步=6 | 搜索时间=0.30 s | YZ路径=65.83 mm
+[训练] Episode 947/1000 | 训练集seed=100 | 孔索引=60 | 孔位置YZ(相对复位轴尖)=(0.679, 0.681) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.160 | 搜索步=7 | 搜索时间=0.35 s | YZ路径=72.08 mm
+[训练] Episode 948/1000 | 训练集seed=100 | 孔索引=381 | 孔位置YZ(相对复位轴尖)=(1.744, 0.583) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.040 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=16.92 mm
+[训练] Episode 949/1000 | 训练集seed=100 | 孔索引=274 | 孔位置YZ(相对复位轴尖)=(-2.621, -0.275) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.080 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=44.71 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 6.91     |
+|    ep_rew_mean     | 41.9     |
+| time/              |          |
+|    episodes        | 940      |
+|    fps             | 0        |
+|    time_elapsed    | 791      |
+|    total_timesteps | 11785    |
+| train/             |          |
+|    actor_loss      | -32.5    |
+|    critic_loss     | 143      |
+|    ent_coef        | 0.207    |
+|    ent_coef_loss   | -0.365   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6774     |
+---------------------------------
+[训练] Episode 950/1000 | 训练集seed=100 | 孔索引=252 | 孔位置YZ(相对复位轴尖)=(1.941, -0.174) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.040 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=12.25 mm
+[训练] Episode 951/1000 | 训练集seed=100 | 孔索引=620 | 孔位置YZ(相对复位轴尖)=(-0.989, -2.562) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.100 | 搜索步=11 | 搜索时间=0.55 s | YZ路径=105.60 mm
+[训练] Episode 952/1000 | 训练集seed=100 | 孔索引=895 | 孔位置YZ(相对复位轴尖)=(0.772, -0.372) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.080 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=25.86 mm
+[训练] Episode 953/1000 | 训练集seed=100 | 孔索引=771 | 孔位置YZ(相对复位轴尖)=(2.475, -2.902) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.110 | 搜索步=4 | 搜索时间=0.20 s | YZ路径=29.83 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 6.95     |
+|    ep_rew_mean     | 41.9     |
+| time/              |          |
+|    episodes        | 944      |
+|    fps             | 0        |
+|    time_elapsed    | 898      |
+|    total_timesteps | 11807    |
+| train/             |          |
+|    actor_loss      | -34.1    |
+|    critic_loss     | 165      |
+|    ent_coef        | 0.206    |
+|    ent_coef_loss   | -0.0923  |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6796     |
+---------------------------------
+[训练] Episode 954/1000 | 训练集seed=100 | 孔索引=150 | 孔位置YZ(相对复位轴尖)=(1.798, -0.339) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.110 | 搜索步=4 | 搜索时间=0.20 s | YZ路径=47.20 mm
+[训练] Episode 955/1000 | 训练集seed=100 | 孔索引=427 | 孔位置YZ(相对复位轴尖)=(0.451, -1.031) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.170 | 搜索步=9 | 搜索时间=0.45 s | YZ路径=113.32 mm
+[训练] Episode 956/1000 | 训练集seed=100 | 孔索引=334 | 孔位置YZ(相对复位轴尖)=(2.651, 0.010) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=119.870 | 搜索步=17 | 搜索时间=0.85 s | YZ路径=241.14 mm
+[训练] Episode 957/1000 | 训练集seed=100 | 孔索引=25 | 孔位置YZ(相对复位轴尖)=(0.583, -2.107) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=19.950 | 搜索步=6 | 搜索时间=0.30 s | YZ路径=179.61 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 7.13     |
+|    ep_rew_mean     | 45.8     |
+| time/              |          |
+|    episodes        | 948      |
+|    fps             | 0        |
+|    time_elapsed    | 1027     |
+|    total_timesteps | 11847    |
+| train/             |          |
+|    actor_loss      | -34.3    |
+|    critic_loss     | 160      |
+|    ent_coef        | 0.205    |
+|    ent_coef_loss   | -0.675   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6836     |
+---------------------------------
+[训练] Episode 958/1000 | 训练集seed=100 | 孔索引=899 | 孔位置YZ(相对复位轴尖)=(2.528, -1.404) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.120 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=47.06 mm
+[训练] Episode 959/1000 | 训练集seed=100 | 孔索引=859 | 孔位置YZ(相对复位轴尖)=(-0.008, -0.978) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.080 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=21.00 mm
+[训练] Episode 960/1000 | 训练集seed=100 | 孔索引=919 | 孔位置YZ(相对复位轴尖)=(-0.708, -0.706) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.050 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=30.51 mm
+[训练] Episode 961/1000 | 训练集seed=100 | 孔索引=120 | 孔位置YZ(相对复位轴尖)=(1.197, 1.745) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.280 | 搜索步=10 | 搜索时间=0.50 s | YZ路径=115.71 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 7.24     |
+|    ep_rew_mean     | 44.8     |
+| time/              |          |
+|    episodes        | 952      |
+|    fps             | 0        |
+|    time_elapsed    | 1118     |
+|    total_timesteps | 11869    |
+| train/             |          |
+|    actor_loss      | -34.7    |
+|    critic_loss     | 119      |
+|    ent_coef        | 0.204    |
+|    ent_coef_loss   | -0.523   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6858     |
+---------------------------------
+[训练] Episode 962/1000 | 训练集seed=100 | 孔索引=821 | 孔位置YZ(相对复位轴尖)=(1.680, -1.520) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.020 | 搜索步=4 | 搜索时间=0.20 s | YZ路径=90.65 mm
+[训练] Episode 963/1000 | 训练集seed=100 | 孔索引=742 | 孔位置YZ(相对复位轴尖)=(-0.480, 0.275) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.020 | 搜索步=6 | 搜索时间=0.30 s | YZ路径=69.64 mm
+[训练] Episode 964/1000 | 训练集seed=100 | 孔索引=960 | 孔位置YZ(相对复位轴尖)=(2.756, -2.246) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.150 | 搜索步=5 | 搜索时间=0.25 s | YZ路径=38.45 mm
+[训练] Episode 965/1000 | 训练集seed=100 | 孔索引=78 | 孔位置YZ(相对复位轴尖)=(0.349, 2.882) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.080 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=12.16 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 7.15     |
+|    ep_rew_mean     | 46.1     |
+| time/              |          |
+|    episodes        | 956      |
+|    fps             | 0        |
+|    time_elapsed    | 1254     |
+|    total_timesteps | 11890    |
+| train/             |          |
+|    actor_loss      | -33.6    |
+|    critic_loss     | 142      |
+|    ent_coef        | 0.204    |
+|    ent_coef_loss   | -0.353   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6879     |
+---------------------------------
+[训练] Episode 966/1000 | 训练集seed=100 | 孔索引=756 | 孔位置YZ(相对复位轴尖)=(-1.925, 2.213) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.080 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=37.18 mm
+[训练] Episode 967/1000 | 训练集seed=100 | 孔索引=482 | 孔位置YZ(相对复位轴尖)=(-0.992, 2.527) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.040 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=15.48 mm
+[训练] Episode 968/1000 | 训练集seed=100 | 孔索引=857 | 孔位置YZ(相对复位轴尖)=(1.561, 1.198) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.000 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=2.45 mm
+[训练] Episode 969/1000 | 训练集seed=100 | 孔索引=912 | 孔位置YZ(相对复位轴尖)=(1.699, 0.013) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.080 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=17.42 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 6.89     |
+|    ep_rew_mean     | 48.4     |
+| time/              |          |
+|    episodes        | 960      |
+|    fps             | 0        |
+|    time_elapsed    | 1352     |
+|    total_timesteps | 11899    |
+| train/             |          |
+|    actor_loss      | -30.6    |
+|    critic_loss     | 108      |
+|    ent_coef        | 0.203    |
+|    ent_coef_loss   | -0.509   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6888     |
+---------------------------------
+[训练] Episode 970/1000 | 训练集seed=100 | 孔索引=790 | 孔位置YZ(相对复位轴尖)=(-0.324, 1.123) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.080 | 搜索步=5 | 搜索时间=0.25 s | YZ路径=97.10 mm
+[训练] Episode 971/1000 | 训练集seed=100 | 孔索引=275 | 孔位置YZ(相对复位轴尖)=(1.405, -1.683) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.120 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=45.08 mm
+[训练] Episode 972/1000 | 训练集seed=100 | 孔索引=72 | 孔位置YZ(相对复位轴尖)=(-1.884, -0.473) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.120 | 搜索步=6 | 搜索时间=0.30 s | YZ路径=82.25 mm
+[训练] Episode 973/1000 | 训练集seed=100 | 孔索引=457 | 孔位置YZ(相对复位轴尖)=(-2.801, -1.013) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.040 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=35.46 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 6.91     |
+|    ep_rew_mean     | 49.7     |
+| time/              |          |
+|    episodes        | 964      |
+|    fps             | 0        |
+|    time_elapsed    | 1453     |
+|    total_timesteps | 11918    |
+| train/             |          |
+|    actor_loss      | -30.4    |
+|    critic_loss     | 122      |
+|    ent_coef        | 0.203    |
+|    ent_coef_loss   | -0.931   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6907     |
+---------------------------------
+[训练] Episode 974/1000 | 训练集seed=100 | 孔索引=404 | 孔位置YZ(相对复位轴尖)=(1.352, 1.895) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.070 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=62.51 mm
+[训练] Episode 975/1000 | 训练集seed=100 | 孔索引=642 | 孔位置YZ(相对复位轴尖)=(0.068, -0.871) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.120 | 搜索步=4 | 搜索时间=0.20 s | YZ路径=48.01 mm
+[训练] Episode 976/1000 | 训练集seed=100 | 孔索引=752 | 孔位置YZ(相对复位轴尖)=(0.259, 2.639) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=19.890 | 搜索步=9 | 搜索时间=0.45 s | YZ路径=126.84 mm
+[训练] Episode 977/1000 | 训练集seed=100 | 孔索引=617 | 孔位置YZ(相对复位轴尖)=(-2.502, -0.700) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.210 | 搜索步=10 | 搜索时间=0.50 s | YZ路径=155.14 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 6.84     |
+|    ep_rew_mean     | 51       |
+| time/              |          |
+|    episodes        | 968      |
+|    fps             | 0        |
+|    time_elapsed    | 1554     |
+|    total_timesteps | 11947    |
+| train/             |          |
+|    actor_loss      | -34      |
+|    critic_loss     | 164      |
+|    ent_coef        | 0.202    |
+|    ent_coef_loss   | -0.751   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6936     |
+---------------------------------
+[训练] Episode 978/1000 | 训练集seed=100 | 孔索引=338 | 孔位置YZ(相对复位轴尖)=(-0.058, -1.973) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.110 | 搜索步=4 | 搜索时间=0.20 s | YZ路径=35.95 mm
+[训练] Episode 979/1000 | 训练集seed=100 | 孔索引=977 | 孔位置YZ(相对复位轴尖)=(0.126, 1.162) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.120 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=37.13 mm
+[训练] Episode 980/1000 | 训练集seed=100 | 孔索引=219 | 孔位置YZ(相对复位轴尖)=(-2.579, 0.921) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.060 | 搜索步=4 | 搜索时间=0.20 s | YZ路径=42.62 mm
+[训练] Episode 981/1000 | 训练集seed=100 | 孔索引=237 | 孔位置YZ(相对复位轴尖)=(-2.687, 2.058) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.070 | 搜索步=6 | 搜索时间=0.30 s | YZ路径=119.26 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 6.72     |
+|    ep_rew_mean     | 52       |
+| time/              |          |
+|    episodes        | 972      |
+|    fps             | 0        |
+|    time_elapsed    | 1624     |
+|    total_timesteps | 11968    |
+| train/             |          |
+|    actor_loss      | -34      |
+|    critic_loss     | 166      |
+|    ent_coef        | 0.202    |
+|    ent_coef_loss   | -0.351   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6957     |
+---------------------------------
+[训练] Episode 982/1000 | 训练集seed=100 | 孔索引=714 | 孔位置YZ(相对复位轴尖)=(-2.252, -2.843) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.200 | 搜索步=5 | 搜索时间=0.25 s | YZ路径=64.03 mm
+[训练] Episode 983/1000 | 训练集seed=100 | 孔索引=975 | 孔位置YZ(相对复位轴尖)=(1.720, 1.412) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.150 | 搜索步=5 | 搜索时间=0.25 s | YZ路径=56.81 mm
+[训练] Episode 984/1000 | 训练集seed=100 | 孔索引=119 | 孔位置YZ(相对复位轴尖)=(-1.905, 1.387) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.040 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=33.78 mm
+[训练] Episode 985/1000 | 训练集seed=100 | 孔索引=110 | 孔位置YZ(相对复位轴尖)=(1.737, 1.653) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.000 | 搜索步=6 | 搜索时间=0.30 s | YZ路径=95.42 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 6.64     |
+|    ep_rew_mean     | 52       |
+| time/              |          |
+|    episodes        | 976      |
+|    fps             | 0        |
+|    time_elapsed    | 1692     |
+|    total_timesteps | 11989    |
+| train/             |          |
+|    actor_loss      | -36.1    |
+|    critic_loss     | 149      |
+|    ent_coef        | 0.201    |
+|    ent_coef_loss   | -0.845   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6978     |
+---------------------------------
+[训练] Episode 986/1000 | 训练集seed=100 | 孔索引=230 | 孔位置YZ(相对复位轴尖)=(2.980, 1.514) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.080 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=25.40 mm
+[训练] Episode 987/1000 | 训练集seed=100 | 孔索引=974 | 孔位置YZ(相对复位轴尖)=(0.906, 0.217) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.080 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=48.69 mm
+[训练] Episode 988/1000 | 训练集seed=100 | 孔索引=207 | 孔位置YZ(相对复位轴尖)=(-0.299, 2.497) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.170 | 搜索步=6 | 搜索时间=0.30 s | YZ路径=152.29 mm
+[训练] Episode 989/1000 | 训练集seed=100 | 孔索引=669 | 孔位置YZ(相对复位轴尖)=(-1.725, -1.897) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.060 | 搜索步=4 | 搜索时间=0.20 s | YZ路径=59.23 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 6.6      |
+|    ep_rew_mean     | 52.3     |
+| time/              |          |
+|    episodes        | 980      |
+|    fps             | 0        |
+|    time_elapsed    | 1783     |
+|    total_timesteps | 12007    |
+| train/             |          |
+|    actor_loss      | -31.8    |
+|    critic_loss     | 107      |
+|    ent_coef        | 0.201    |
+|    ent_coef_loss   | -0.595   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 6996     |
+---------------------------------
+[训练] Episode 990/1000 | 训练集seed=100 | 孔索引=106 | 孔位置YZ(相对复位轴尖)=(-1.928, 1.125) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.160 | 搜索步=4 | 搜索时间=0.20 s | YZ路径=114.63 mm
+[训练] Episode 991/1000 | 训练集seed=100 | 孔索引=536 | 孔位置YZ(相对复位轴尖)=(-0.649, -1.994) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.140 | 搜索步=12 | 搜索时间=0.60 s | YZ路径=230.66 mm
+[训练] Episode 992/1000 | 训练集seed=100 | 孔索引=337 | 孔位置YZ(相对复位轴尖)=(1.091, -1.813) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.230 | 搜索步=7 | 搜索时间=0.35 s | YZ路径=84.96 mm
+[训练] Episode 993/1000 | 训练集seed=100 | 孔索引=967 | 孔位置YZ(相对复位轴尖)=(-0.636, 2.729) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.140 | 搜索步=9 | 搜索时间=0.45 s | YZ路径=97.25 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 6.7      |
+|    ep_rew_mean     | 52.6     |
+| time/              |          |
+|    episodes        | 984      |
+|    fps             | 0        |
+|    time_elapsed    | 1872     |
+|    total_timesteps | 12043    |
+| train/             |          |
+|    actor_loss      | -31.9    |
+|    critic_loss     | 120      |
+|    ent_coef        | 0.2      |
+|    ent_coef_loss   | -0.319   |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 7032     |
+---------------------------------
+[训练] Episode 994/1000 | 训练集seed=100 | 孔索引=135 | 孔位置YZ(相对复位轴尖)=(1.928, 0.365) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.040 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=20.57 mm
+[训练] Episode 995/1000 | 训练集seed=100 | 孔索引=256 | 孔位置YZ(相对复位轴尖)=(2.432, -1.740) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.090 | 搜索步=7 | 搜索时间=0.35 s | YZ路径=101.80 mm
+[训练] Episode 996/1000 | 训练集seed=100 | 孔索引=231 | 孔位置YZ(相对复位轴尖)=(-1.531, 1.264) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.110 | 搜索步=7 | 搜索时间=0.35 s | YZ路径=90.28 mm
+[训练] Episode 997/1000 | 训练集seed=100 | 孔索引=964 | 孔位置YZ(相对复位轴尖)=(-1.060, -0.336) mm | 找孔=True | 完整装配=False | 结束原因=insertion_failure | 回合奖励=20.030 | 搜索步=2 | 搜索时间=0.10 s | YZ路径=20.04 mm
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 6.69     |
+|    ep_rew_mean     | 54.6     |
+| time/              |          |
+|    episodes        | 988      |
+|    fps             | 0        |
+|    time_elapsed    | 1968     |
+|    total_timesteps | 12064    |
+| train/             |          |
+|    actor_loss      | -31.3    |
+|    critic_loss     | 115      |
+|    ent_coef        | 0.2      |
+|    ent_coef_loss   | -1.04    |
+|    learning_rate   | 0.0003   |
+|    n_updates       | 7053     |
+---------------------------------
+[训练] Episode 998/1000 | 训练集seed=100 | 孔索引=4 | 孔位置YZ(相对复位轴尖)=(1.129, -1.860) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.040 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=2.72 mm
+[训练] Episode 999/1000 | 训练集seed=100 | 孔索引=811 | 孔位置YZ(相对复位轴尖)=(1.676, 1.665) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.040 | 搜索步=1 | 搜索时间=0.05 s | YZ路径=13.79 mm
+[训练] Episode 1000/1000 | 训练集seed=100 | 孔索引=920 | 孔位置YZ(相对复位轴尖)=(0.473, 2.258) mm | 找孔=True | 完整装配=True | 结束原因=assembly_success | 回合奖励=120.120 | 搜索步=3 | 搜索时间=0.15 s | YZ路径=18.09 mm
+[检查点] 保存 Episode 1000：/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_SAC/sac_results/models/checkpoints/episode_1000
+[验证] {'assembly_success_rate': 0.2, 'hole_search_success_rate': 0.3333333333333333, 'fault_rate': 0.0, 'mean_successful_search_time_s': 0.8700000000000001, 'mean_successful_yz_path_length_m': 0.02077195170609439}
+================================
+结束时间: 2026-08-11T10:41:07+08:00
+训练进程退出码: 0

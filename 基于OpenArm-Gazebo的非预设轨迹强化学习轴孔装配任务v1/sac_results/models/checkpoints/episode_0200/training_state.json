@@ -1,0 +1,9 @@
+{
+  "resume_format_version": 1,
+  "training_episode": 200,
+  "last_validated_episode": 200,
+  "total_env_steps": 6155,
+  "reason": "periodic_validation_complete",
+  "saved_at_unix": 1786076495.2835789,
+  "saved_at_local": "2026-08-07T12:21:35+0800"
+}

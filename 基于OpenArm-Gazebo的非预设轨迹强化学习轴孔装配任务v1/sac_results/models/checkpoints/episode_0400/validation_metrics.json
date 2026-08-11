@@ -1,0 +1,7 @@
+{
+  "assembly_success_rate": 0.23333333333333334,
+  "hole_search_success_rate": 0.36666666666666664,
+  "fault_rate": 0.0,
+  "mean_successful_search_time_s": 1.0454545454545456,
+  "mean_successful_yz_path_length_m": 0.01879713847553213
+}

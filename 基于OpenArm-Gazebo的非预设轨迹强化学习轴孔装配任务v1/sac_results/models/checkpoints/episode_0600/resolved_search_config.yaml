@@ -1,0 +1,111 @@
+rl_hole_search_controller:
+  ros__parameters:
+    # 原规则控制参数：与 spiral_search.yaml 数值一致，SAC 不修改它们。
+    use_sim_time: true
+    control_rate: 500.0
+    start_delay: 5.0
+    r_max: 0.004
+    r_rate: 0.0002
+    omega: 2.0
+    myz: 0.5
+    kyz: 80.0
+    dyz: 30.0
+    fx: 1.0
+    max_yz_force: 4.0
+    # 对孔姿态控制：单位分别为 N*m/rad、N*m*s/rad、N*m。
+    # 复位姿态已对正孔轴；该增益用于抵抗插入期间的机构耦合倾斜。
+    orientation_k: 30.0
+    orientation_d: 8.0
+    max_orientation_torque: 5.0
+    use_virtual_plate_contact: true
+    virtual_contact_k: 1000.0
+    virtual_contact_d: 20.0
+    max_virtual_contact_force: 3.0
+    virtual_contact_tolerance: 0.0002
+    max_joint_torque: [40.0, 40.0, 27.0, 27.0, 7.0, 7.0, 7.0]
+    gravity_scale: 0.0
+    joint_damping: [2.0, 2.0, 1.5, 1.5, 0.5, 0.5, 0.4]
+    joint_stiffness: [4.0, 4.0, 3.0, 3.0, 1.0, 1.0, 0.5]
+    max_search_time: 30.0
+    approach_timeout: 12.0
+    contact_confirm_time: 0.20
+    max_x_travel: 0.035
+    hole_entry_depth: 0.003
+    hole_center_y: -0.43800
+    hole_center_z: 0.57242
+    hole_center_clearance: 0.0005
+    hole_inside_hysteresis: 0.00015
+    hole_surface_x: 0.32370
+    insert_target_depth: 0.017
+    # INSERTING 专用：降低轴向力，避免 X 向推力通过机构耦合把轴挤离孔心。
+    # 单位 N。由原来的 2.0 N 调为 1.2 N。
+    insert_fx: 1.2
+    insert_hold_confirm_time: 0.05
+    insert_velocity_filter_tau: 0.05
+    # 接近 17 mm 后的 X 向深度位置刚度/速度阻尼，单位 N/m、N*s/m。
+    insert_depth_kx: 600.0
+    insert_depth_dx: 30.0
+    # 深度伺服参考比 17 mm 多 0.3 mm；成功门槛仍严格是 17 mm。
+    insert_depth_reference_margin: 0.0003
+    insert_hold_max_joint_velocity: 3.0
+    insert_hold_max_tool_velocity: 0.25
+    insert_max_depth: 0.020
+    # INSERTING 专用横向位置刚度/速度阻尼；单位分别为 N/m、N*s/m。
+    # 仅在插入阶段提高，以便在轴向推进时仍能维持孔心每轴 ±0.5 mm。
+    insert_kyz: 900.0
+    insert_dyz: 70.0
+    insert_dx: 10.0
+    max_insert_x_force: 2.5
+    max_insert_yz_force: 4.0
+    mit_hold_kp: [30.0, 30.0, 30.0, 30.0, 20.0, 20.0, 15.0]
+    mit_hold_kd: [1.5, 1.5, 1.5, 1.5, 0.5, 0.5, 0.3]
+    mit_hold_ramp_time: 0.3
+    mit_hold_safety_delay: 2.0
+    mit_velocity_filter_tau: 0.02
+    mit_hold_max_joint_error: 0.30
+    mit_hold_max_joint_velocity: 5.0
+    mit_hold_fault_confirm_time: 0.25
+    mit_hold_cartesian_kx: 180.0
+    mit_hold_cartesian_dx: 25.0
+    # 保持阶段继续使用与插入阶段相同量级的横向对中能力。
+    mit_hold_cartesian_kyz: 900.0
+    mit_hold_cartesian_dyz: 70.0
+    mit_hold_max_cartesian_force: 4.0
+    tool_frame: openarm_right_search_tool_tip
+    world_frame: world
+    hole_frame: hole_center
+
+    # V1 冻结的 SAC 搜索接口；单位均为 m 或仿真秒。
+    sac_action_period: 0.05       # 20 Hz 策略周期。
+    sac_action_step: 0.0002       # 每轴动作映射为 0.2 mm。
+    sac_search_half_range: 0.004  # 搜索范围每轴 ±4 mm。
+    sac_max_search_time: 20.0     # 冻结最大搜索时间，单位仿真秒。
+    sac_max_steps: 400            # 冻结最大 SAC 搜索步数。
+    sac_holding_duration: 2.0     # 进入保持后成功所需可见时长，单位仿真秒。
+    # 6 mm 轴插入 7 mm 方孔、深度 17 mm 时的轴线倾角验收上限。
+    # 1.5 deg 可保证倾斜造成的横向位移小于约 0.45 mm。
+    insertion_max_tilt_deg: 1.5
+    insertion_depth_tolerance: 0.0001 # 深度验收数值容差，单位 m（0.1 mm）。
+    # 找孔后规则控制器完成深度伺服与严格对中所需的最长时间，单位仿真秒。
+    insertion_timeout: 60.0
+    reset_settle_time: 0.75       # 受控关节复位后最少稳定等待，单位仿真秒。
+    # 逆运动学求得的对孔复位姿态，单位 rad。与原复位姿态的轴尖位置相同，
+    # 但工具局部 +Z 轴与孔的世界 +X 轴对齐，避免以约 15 deg 倾角硬插。
+    reset_joint_positions: [0.079866760, 1.132669807, -0.046520126, 1.107354402, -0.026191662, 0.016393745, 0.430011105]
+    reset_joint_kp: [30.0, 30.0, 30.0, 30.0, 20.0, 20.0, 15.0] # N*m/rad。
+    reset_joint_kd: [2.0, 2.0, 1.5, 1.5, 0.5, 0.5, 0.4] # N*m*s/rad。
+    # 每回合删除并重建四块板：外边界保持固定，只改变真实深方孔位置。
+    fixture_model_name: hole_fixture
+    fixture_center_x: 0.33220     # 板中心 X，单位 m；前表面为0.32370 m。
+    board_center_y: -0.43800      # 固定板中心 Y，单位 m。
+    board_center_z: 0.57242       # 固定板中心 Z，单位 m。
+    board_size_y: 0.340           # 固定板 Y 向宽度，单位 m。
+    board_size_z: 0.620           # 固定板 Z 向高度，单位 m。
+    board_depth_x: 0.017          # 板厚/方孔深度，单位 m。
+    hole_size_yz: 0.007           # 方孔 Y、Z 边长，单位 m。
+    board_transparency: 0.65      # 0不透明、1完全透明。
+    world_name: hole_search
+    sac_state_publish_period: 0.05
+    action_topic: /sac_hole_search/action
+    command_topic: /sac_hole_search/episode_command
+    state_topic: /sac_hole_search/state

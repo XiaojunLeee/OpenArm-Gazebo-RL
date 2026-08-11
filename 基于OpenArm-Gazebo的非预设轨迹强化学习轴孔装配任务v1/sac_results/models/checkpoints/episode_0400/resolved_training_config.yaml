@@ -1,0 +1,29 @@
+# SAC V1 冻结超参数。此文件与模型、日志和检查点一起复制保存，便于复现。
+sac:
+  policy: MlpPolicy
+  net_arch: [256, 256]
+  activation: ReLU
+  learning_rate: 0.0003
+  gamma: 0.99
+  tau: 0.005
+  batch_size: 256
+  buffer_size: 1000000
+  learning_starts: 5000
+  train_freq: 1
+  gradient_steps: 1
+  target_update_interval: 1
+  ent_coef: auto
+  target_entropy: -2
+  device: auto
+
+run:
+  training_episodes: 1000       # 冻结训练回合数。
+  validation_interval: 100      # 每 100 个实际完成的训练回合保存检查点并验证。
+  artifact_root: sac_results    # 相对包根目录的训练产物目录。
+  # 当前 Episode 连续这么久收不到状态心跳，才认为 Gazebo/控制器失联。
+  ros_response_timeout_s: 30.0
+  # reset 包含关节复位、板面重建、HOLDING 和 APPROACHING，使用独立总时限。
+  ros_reset_timeout_s: 180.0
+  # <=0 表示 INSERTING/INSERT_HOLDING 不设墙钟总时限，只监视心跳；
+  # 控制器内部 insertion_timeout 仍按仿真时间负责结束异常插入。
+  ros_terminal_timeout_s: 0.0

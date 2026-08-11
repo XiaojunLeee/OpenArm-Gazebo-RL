@@ -1,0 +1,26 @@
+# ROS2 compilation
+build/
+install/
+log/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.swp
+*~
+.DS_Store
+
+# Huge SAC replay buffers
+replay_buffer.pkl
+
+# Backup archives
+*.tar
+*.tar.gz
+*.zip.bak
