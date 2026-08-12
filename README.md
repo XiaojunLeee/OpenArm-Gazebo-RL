@@ -1,15 +1,13 @@
 # OpenArm-Gazebo-RL
 ## 本仓库主要记录基于强化学习的OpenArm、Gazebo的相关任务
 
-### 2026.8.11 上传v1_OpenArm-Gazebo非预设轨迹强化学习轴孔装配任务
+### （1）OpenArm-Gazebo非预设轨迹强化学习轴孔装配任务
 
-#### v1版本贡献：
+#### 2026.8.11v1版本贡献：
 
 SAC算法植入SEARCHING阶段，可以跑通，参数未优化。
 
-### 2026.8.12 上传v2_OpenArm-Gazebo非预设轨迹强化学习轴孔装配任务
-
-#### v2版本贡献：
+#### 2026.8.12v2版本贡献：
 
 （1）[README](https://github.com/XiaojunLeee/OpenArm-Gazebo-RL-Guideline/blob/main/v2_OpenArm-Gazebo%E9%9D%9E%E9%A2%84%E8%AE%BE%E8%BD%A8%E8%BF%B9%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%BD%B4%E5%AD%94%E8%A3%85%E9%85%8D%E4%BB%BB%E5%8A%A1/README.md)文件中针对SEARCHING阶段加入了MIT控制的相关说明方便理解，并加入每次修改参数后重新编译的指令。
 
