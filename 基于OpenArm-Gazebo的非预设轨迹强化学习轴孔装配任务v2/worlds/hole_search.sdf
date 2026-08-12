@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<sdf version="1.8">
+  <world name="hole_search">
+    <physics name="fast_contact" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin filename="ignition-gazebo-physics-system"
+            name="ignition::gazebo::systems::Physics"/>
+    <plugin filename="ignition-gazebo-user-commands-system"
+            name="ignition::gazebo::systems::UserCommands"/>
+    <plugin filename="ignition-gazebo-scene-broadcaster-system"
+            name="ignition::gazebo::systems::SceneBroadcaster"/>
+    <plugin filename="ignition-gazebo-contact-system"
+            name="ignition::gazebo::systems::Contact"/>
+
+    <!-- 零重力让力矩控制器复位可重复；惯量和控制动力学仍然启用。 -->
+    <gravity>0 0 0</gravity>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.4 0.2 -1</direction>
+    </light>
+
+    <model name="ground">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>3 3 0.02</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>3 3 0.02</size></box></geometry>
+          <material><diffuse>0.55 0.55 0.55 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 初始固定板：外边界 Y=340 mm、Z=620 mm，厚度/孔深 X=17 mm。
+         四块实体直接围成 7 mm × 7 mm 方孔，没有黑色标记和移动补片。
+         每个 Episode 运行控制器会删除此模型，并在完全相同的固定外边界
+         内按随机孔坐标重新计算四块实体后生成新的 hole_fixture。 -->
+    <model name="hole_fixture">
+      <static>true</static>
+      <pose>0.33220 -0.43800 0.57242 0 0 0</pose>
+      <link name="fixture">
+        <collision name="top">
+          <pose>0 0 0.15675 0 0 0</pose>
+          <geometry><box><size>0.017 0.34 0.3065</size></box></geometry>
+        </collision>
+        <visual name="top_visual">
+          <pose>0 0 0.15675 0 0 0</pose>
+          <geometry><box><size>0.017 0.34 0.3065</size></box></geometry>
+          <transparency>0.65</transparency>
+          <material><diffuse>0.75 0.45 0.15 0.35</diffuse></material>
+        </visual>
+
+        <collision name="bottom">
+          <pose>0 0 -0.15675 0 0 0</pose>
+          <geometry><box><size>0.017 0.34 0.3065</size></box></geometry>
+        </collision>
+        <visual name="bottom_visual">
+          <pose>0 0 -0.15675 0 0 0</pose>
+          <geometry><box><size>0.017 0.34 0.3065</size></box></geometry>
+          <transparency>0.65</transparency>
+          <material><diffuse>0.75 0.45 0.15 0.35</diffuse></material>
+        </visual>
+
+        <collision name="left">
+          <pose>0 0.08675 0 0 0 0</pose>
+          <geometry><box><size>0.017 0.1665 0.007</size></box></geometry>
+        </collision>
+        <visual name="left_visual">
+          <pose>0 0.08675 0 0 0 0</pose>
+          <geometry><box><size>0.017 0.1665 0.007</size></box></geometry>
+          <transparency>0.65</transparency>
+          <material><diffuse>0.75 0.45 0.15 0.35</diffuse></material>
+        </visual>
+
+        <collision name="right">
+          <pose>0 -0.08675 0 0 0 0</pose>
+          <geometry><box><size>0.017 0.1665 0.007</size></box></geometry>
+        </collision>
+        <visual name="right_visual">
+          <pose>0 -0.08675 0 0 0 0</pose>
+          <geometry><box><size>0.017 0.1665 0.007</size></box></geometry>
+          <transparency>0.65</transparency>
+          <material><diffuse>0.75 0.45 0.15 0.35</diffuse></material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

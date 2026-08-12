@@ -1,0 +1,23 @@
+[0.011s] Invoking command in '/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/build/openarm_description': CMAKE_PREFIX_PATH=/opt/ros/humble CONDA_PROMPT_MODIFIER=(base) /usr/bin/cmake /home/xiaojun/openarm_ws/src/openarm_description -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/install/openarm_description
+[0.026s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.169s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.177s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.206s] Traceback (most recent call last):
+[0.209s]   File "/opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 22, in <module>
+[0.209s]     from catkin_pkg.package import parse_package_string
+[0.209s] ModuleNotFoundError: No module named 'catkin_pkg'
+[0.215s] CMake Error at /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:95 (message):
+[0.215s]   execute_process(/home/xiaojun/miniforge3/bin/python3
+[0.215s]   /opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py
+[0.215s]   /home/xiaojun/openarm_ws/src/openarm_description/package.xml
+[0.215s]   /home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/build/openarm_description/ament_cmake_core/package.cmake)
+[0.215s]   returned error code 1
+[0.215s] Call Stack (most recent call first):
+[0.215s]   /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:49 (_ament_package_xml)
+[0.215s]   /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_find_test_dependencies.cmake:31 (ament_package_xml)
+[0.215s]   CMakeLists.txt:29 (ament_lint_auto_find_test_dependencies)
+[0.216s] 
+[0.216s] 
+[0.216s] -- Configuring incomplete, errors occurred!
+[0.216s] See also "/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/build/openarm_description/CMakeFiles/CMakeOutput.log".
+[0.220s] Invoked command in '/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/build/openarm_description' returned '1': CMAKE_PREFIX_PATH=/opt/ros/humble CONDA_PROMPT_MODIFIER=(base) /usr/bin/cmake /home/xiaojun/openarm_ws/src/openarm_description -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/install/openarm_description

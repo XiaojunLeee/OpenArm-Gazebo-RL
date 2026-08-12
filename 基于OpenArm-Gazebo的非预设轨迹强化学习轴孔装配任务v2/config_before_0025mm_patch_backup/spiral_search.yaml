@@ -1,0 +1,77 @@
+spiral_hole_search_controller:
+  ros__parameters:
+    use_sim_time: true
+    control_rate: 500.0
+    start_delay: 5.0
+    r_max: 0.004
+    r_rate: 0.0002
+    omega: 2.0
+    myz: 0.5
+    kyz: 80.0
+    dyz: 30.0
+    fx: 1.0
+    max_yz_force: 4.0
+    orientation_k: 10.0
+    orientation_d: 5.0
+    max_orientation_torque: 3.0
+    use_virtual_plate_contact: true
+    virtual_contact_k: 1000.0
+    virtual_contact_d: 20.0
+    max_virtual_contact_force: 3.0
+    virtual_contact_tolerance: 0.0002
+    max_joint_torque: [40.0, 40.0, 27.0, 27.0, 7.0, 7.0, 7.0]
+    gravity_scale: 0.0
+    joint_damping: [2.0, 2.0, 1.5, 1.5, 0.5, 0.5, 0.4]
+    joint_stiffness: [4.0, 4.0, 3.0, 3.0, 1.0, 1.0, 0.5]
+    max_search_time: 30.0
+    approach_timeout: 12.0
+    contact_confirm_time: 0.20
+    max_x_travel: 0.035
+    hole_entry_depth: 0.003
+    # Alternate YZ test point: about -1.65 mm in Y and +1.00 mm in Z
+    # from the nominal initial tool axis (approximately 1.93 mm radial offset).
+    hole_center_y: -0.43800
+    hole_center_z: 0.57242
+    hole_center_clearance: 0.0005
+    hole_inside_hysteresis: 0.00015
+    hole_surface_x: 0.32370
+    # Measured lock-hole/key insertion depth: approximately 17 mm.
+    insert_target_depth: 0.017
+    # INSERTING 专用：降低轴向力，避免 X 向推力通过机构耦合把轴挤离孔心。
+    # 单位 N。由原来的 2.0 N 调为 1.2 N。
+    insert_fx: 1.2
+    insert_hold_confirm_time: 0.05
+    insert_velocity_filter_tau: 0.05
+    # 接近 17 mm 后的 X 向深度位置刚度/速度阻尼，单位 N/m、N*s/m。
+    insert_depth_kx: 600.0
+    insert_depth_dx: 30.0
+    # 深度伺服参考比 17 mm 多 0.3 mm；成功门槛仍严格是 17 mm。
+    insert_depth_reference_margin: 0.0003
+    insert_hold_max_joint_velocity: 3.0
+    insert_hold_max_tool_velocity: 0.25
+    # Independent over-travel guard, 3 mm beyond the nominal seated depth.
+    insert_max_depth: 0.020
+    # INSERTING 专用横向位置刚度/速度阻尼；单位分别为 N/m、N*s/m。
+    # 仅在插入阶段提高，以便在轴向推进时仍能维持孔心每轴 ±0.5 mm。
+    insert_kyz: 900.0
+    insert_dyz: 70.0
+    insert_dx: 10.0
+    max_insert_x_force: 2.5
+    max_insert_yz_force: 4.0
+    mit_hold_kp: [30.0, 30.0, 30.0, 30.0, 20.0, 20.0, 15.0]
+    mit_hold_kd: [1.5, 1.5, 1.5, 1.5, 0.5, 0.5, 0.3]
+    mit_hold_ramp_time: 0.3
+    mit_hold_safety_delay: 2.0
+    mit_velocity_filter_tau: 0.02
+    mit_hold_max_joint_error: 0.30
+    mit_hold_max_joint_velocity: 5.0
+    mit_hold_fault_confirm_time: 0.25
+    mit_hold_cartesian_kx: 180.0
+    mit_hold_cartesian_dx: 25.0
+    # 保持阶段继续使用与插入阶段相同量级的横向对中能力。
+    mit_hold_cartesian_kyz: 900.0
+    mit_hold_cartesian_dyz: 70.0
+    mit_hold_max_cartesian_force: 4.0
+    tool_frame: openarm_right_search_tool_tip
+    world_frame: world
+    hole_frame: hole_center

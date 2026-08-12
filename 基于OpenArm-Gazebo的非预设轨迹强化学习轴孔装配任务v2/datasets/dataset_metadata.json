@@ -1,0 +1,33 @@
+{
+  "unit": "m",
+  "coordinate_order": [
+    "delta_y",
+    "delta_z"
+  ],
+  "range_per_axis_m": [
+    -0.003,
+    0.003
+  ],
+  "generator": "numpy.random.default_rng",
+  "generated_at_utc": "2026-08-06T09:12:25.177861+00:00",
+  "sets": {
+    "train": {
+      "seed": 100,
+      "count": 1000,
+      "file": "train_holes.npy",
+      "dtype": "float64"
+    },
+    "validation": {
+      "seed": 200,
+      "count": 30,
+      "file": "validation_holes.npy",
+      "dtype": "float64"
+    },
+    "test": {
+      "seed": 300,
+      "count": 100,
+      "file": "test_holes.npy",
+      "dtype": "float64"
+    }
+  }
+}

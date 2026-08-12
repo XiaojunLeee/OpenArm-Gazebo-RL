@@ -1,0 +1,37 @@
+# [OpenArm-v1 参数说明补丁：0.025 mm SAC 搜索步长]
+# ros2_control 控制器管理器、关节状态广播器及 7 关节 effort 前向控制器配置。
+# 说明：除 sac_search.yaml 的 sac_action_step 外，本补丁仅添加注释，不改变现有参数值。
+
+controller_manager:
+  ros__parameters:
+    # ros2_control controller_manager 的更新频率，单位 Hz；500 Hz 即每 2 ms 更新一次。
+    update_rate: 500
+    # 是否使用 Gazebo /clock 仿真时间。
+    use_sim_time: true
+
+    joint_state_broadcaster:
+      # 该控制器/广播器所使用的 ros2_control 插件类型。
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    arm_effort_controller:
+      # 该控制器/广播器所使用的 ros2_control 插件类型。
+      type: forward_command_controller/ForwardCommandController
+
+arm_effort_controller:
+  ros__parameters:
+    # arm_effort_controller 直接控制的 7 个 OpenArm 关节列表。
+    joints:
+      - openarm_right_joint1
+      - openarm_right_joint2
+      - openarm_right_joint3
+      - openarm_right_joint4
+      - openarm_right_joint5
+      - openarm_right_joint6
+      - openarm_right_joint7
+    # ForwardCommandController 使用的硬件接口类型；effort 表示上层发送关节力矩/effort 命令。
+    interface_name: effort
+
+joint_state_broadcaster:
+  ros__parameters:
+    # joint_state_broadcaster 发布关节状态的频率，单位 Hz。
+    publish_rate: 500.0
