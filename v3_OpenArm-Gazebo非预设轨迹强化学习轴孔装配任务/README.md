@@ -1,231 +1,623 @@
-# OpenArm Gazebo YZ Spiral Hole Search
+## 引入强化学习（非预设轨迹）
 
-## SAC 搜索路径（V1）
+### 20260812v2——基于SAC算法仅引入于SEARCHING状态的强化学习轴孔装配任务
 
-原 `hole_search_sim.launch.py` 与固定螺旋控制器保持不变。新增
-`sac_hole_search_sim.launch.py` 仅把 `SEARCHING` 的 Y/Z 螺旋参考替换为
-SAC 每 0.05 个仿真秒的一次二维位置增量；`HOLDING`、`APPROACHING`、
-`INSERTING`、`INSERT_HOLDING` 仍调用原规则控制。
+v1版本的SAC算法非预设轨迹轴孔装配任务：
+[openarm_gazebo_hole_search_SAC_backup_20260810_144802.zip](openarm_gazebo_hole_search_SAC_backup_20260810_144802.zip)
 
-启动仿真：
+前提：**无力传感器、无视觉传感器，SAC算法不知道孔每一轮的位置**。
+```text
+复位       → 普通控制
+保持稳定   → 普通控制
+靠近板面   → 普通控制
+寻找孔     → SAC
+插入       → 普通控制
+插入后保持 → 普通控制
+```
+#### 阶段一：复位（Reset）
 
-```bash
+每一个新Episode开始，机械臂的七个关节都要回到一个固定的准备姿态，满足以下条件：
+
+（1）关节位置误差足够小：
+
+<div align="center">
+
+$$
+\max |q-q_{target}|\leq0.01\text{ rad}
+$$
+
+</div>
+
+（2）关节速度足够小：
+
+<div align="center">
+
+$$
+\max |\dot q|\leq0.10\text{ rad/s}
+$$
+
+</div>
+
+表明机械臂已经停稳了。
+复位机械臂关节的同时，孔洞位置还会同步随机放置，即复位后每一个Episode机械臂的初始位置都是一样的，但是孔洞的位置是随机的。
+
+#### 阶段二：保持稳定（HOLDING）
+
+机械臂稳定后，目前是设定了保持5秒的稳定，在进入后续的状态。
+
+#### 阶段三：靠近板面（APPROACHING）
+
+目前建立的坐标系xyz
+```text
+X方向：往孔里面插
+Y方向：板面左右搜索
+Z方向：板面上下搜索
+```
+APPROACHING阶段在X方向完成，找孔阶段在YZ平面完成。
+APPROACHING/SEARCHING阶段，机械臂在X方向施加1N的力（0N —> 1N缓慢增加）。
+目前程序并不是靠真实轴和板发生刚体碰撞来判断接触，而是使用一个虚拟板面弹簧阻尼模型，当轴到了这个位置以后便会产生虚拟反力。
+虚拟板面的模型大概为：
+
+<div align="center">
+
+$F=Kx+Dv$
+
+</div>
+
+```
+弹簧刚度 K = 1000 N/m
+阻尼 D = 20 N·s/m
+最大虚拟反力 = 3 N
+```
+当在某一个控制周期（控制器500Hz）内被判断“连续触碰0.2秒”，则可以认为已经到了板面，APPROACHING状态结束。
+
+![alt text](fig\image.png)
+
+若一直在APPROACHING阶段超过12秒还没进入下一阶段，则进入FAULT。
+
+#### 阶段四：SAC搜索控阶段（SEARCHING）
+
+进入SEARCHING阶段后，先记录目前轴尖的位置，并标记为$Y_0$，$Z_0$，并将此作为搜索中心，并记
+
+<div align="center">
+
+$$
+Y_{ref}=Y_0
+$$
+
+$$
+Z_{ref}=Z_0
+$$
+
+</div>
+
+后续SAC算法会根据策略不断告诉机械臂：
+```text
+下一小步的 Y 方向往哪走？
+下一小步的 Z 方向往哪走？
+```
+**（1）SAC的动作空间**
+
+<div align="center">
+
+$a_t=[a_Y,a_Z]$
+
+</div>
+
+其中$a_Y$，$a_Z$的范围都是[-1,1]，表示下一部动作朝Y、Z的正/负方向移动的权重。
+$a_Y$,$a_Z$只是表示下一步的动作，而并非真实移动的距离，目前v1方案使用的是**位置增量**的方法，就是设定一个最大的动作步长$\Delta{a_{yz}}=0.2mm$，即
+
+<div align="center">
+
+$$
+\Delta{Y}=\Delta{a_{yz} a_Y}
+$$
+
+$$
+\Delta{Z}=\Delta{a_{yz} a_Z}
+$$
+
+</div>
+
+也就是说，假如SAC本轮策略给出的动作是[0.5,-0.8]，则机械臂这一次动作在YZ平面上的实际移动距离为
+<div align="center">
+
+$$
+\Delta Y=+0.1\text{ mm}
+$$
+
+$$
+\Delta Z=-0.16\text{ mm}
+$$
+
+</div>
+
+需要注意的就是，SAC策略给出的动作是以增量的形式，也就是说是从当前参考点一点一点计算，而不是重新冲轴尖初始位置进行计算，所以SAC本质上是在一点一点走路。
+目前SAC策略控制频率为**20Hz**，也就是说**SAC每0.05秒策略就会给出一个动作**。
+与机械臂底层控制器500Hz（每0.002秒一个指令）的联系：
+**SAC给出一个动作对应的位置信息以后，机械臂并非瞬移过去，而是在SAC给出动作后到下一个动作给出前的这0.05秒周期内，机械臂在0.05/0.002=25这25个指令控制周期内，每0.002秒更新一次关节状态，努力平滑地运动到目标的位置。**
+
+**v2版本：修改了最大动作步长为 $\Delta{a_{yz}}=0.05mm$ 。同时修改了SAC发送指令的频率为10Hz，最大搜索时间为40s，最大搜索步数为400。**
+
+
+
+
+```text
+SAC：20 Hz 决定“往哪里走”
+↓
+低层控制器：500 Hz 决定“怎么稳定地走过去”
+```
+
+**v3版本：对action.log的参数做出解释，方便检查抖动原因。**
+
+<div align="center">
+
+$$
+angle\_deg = atan2(action_z,\ action_y)
+$$
+
+</div>
+
+角度不是从 X 轴开始算，而是从 +Y 轴开始算。
+
+```text
+                     +Z
+                     ↑
+                     |
+                 +90°|
+                     |
+     第二象限         |         第一象限
+     (-Y, +Z)        |         (+Y, +Z)
+                     |
+ -Y  ±180° ----------O---------- 0°  +Y
+                     |
+     第三象限        |         第四象限
+     (-Y, -Z)        |         (+Y, -Z)
+                     |
+                 -90°|
+                     |
+                     ↓
+                     -Z
+
+```
+
+以下为action.log的某一行，对其中的参数进行解释理解。
+
+```text
+Episode=2 | Step=1 | GlobalStep=299 | Source=WARMUP_RANDOM | action_y=-0.642969 | action_z=+0.781666 | magnitude=1.012132 | angle_deg=+129.44 | direction=-Y+Z
+```
+
+```text
+（1）Episode：表示当前训练的回合
+（2）Step：表示当前训练回合的搜索步数
+（3）GlobalStep：表示训练开始到现在总的搜索步数
+（4）Source：表示当前动作是否超过learning_starts，若没超过则为WARMUP_RANDOM，动作完全随机；若超过则为POLICY_STOCHASTIC，动作是有策略给出的
+（5）action_y：动作在 Y 方向上的归一化分量，范围为[-1,1]
+（6）action_z：动作在 Z 方向上的归一化分量，范围为[-1,1]
+（7）magnitude：表示这个二维动作向量的“长度”或者“总强度”，采用欧式距离计算方法
+（8）angle_deg：表示这个动作箭头，在 YZ 平面里的方向角，通常用于计算相邻策略动作的夹角（取较小的角）
+（9）direction：对方向的粗略文字描述
+```
+
+
+**（2）SAC的工作空间**
+
+搜索区域的相对起点为：
+
+<div align="center">
+
+$$
+Y_0 \pm 4mm
+$$
+
+$$
+Z_0 \pm 4mm
+$$
+
+</div>
+
+而训练阶段的孔洞随机生成位置为：
+
+<div align="center">
+
+$$
+Y_0 \pm 3mm
+$$
+
+$$
+Z_0 \pm 3mm
+$$
+
+</div>
+
+一个Episode搜索最大时间为20秒，搜索最大动作为400步。
+SAC不知道孔洞的真实位置，因此SAC只能根据
+```text
+自己已经怎么运动
+哪些区域已经走过
+现在速度如何
+还剩多少时间
+```
+形成搜索策略。
+
+**（3）SAC搜索历史**
+
+进入SEARCHING阶段后，SAC会将整个搜索区域划分为9X9的格子地图，走过的地方标记为1，没走过的地方标记为0，避免SAC后期依旧重复来回走。
+
+**（4）SAC奖励函数**
+
+| 情况 | 奖励 |
+|---|---:|
+| 每走一步 | `-0.01` |
+| 进入一个没搜过的新格子 | `+0.05` |
+| 重复进入已经搜过的区域 | `-0.02` |
+| 动作快速大角度反向 | `-0.05` |
+| 靠近搜索边界 | `-0.10` |
+| 找到孔 | `+20` |
+| 最终完整装配成功 | `+100` |
+| 搜索越界 | `-5` |
+| 控制器严重故障 | `-30` |
+| 搜索超时 | `-10` |
+
+**v3版本：修改了一下SAC奖励函数，使SEARCHING阶段动作更平滑。**
+
+| 情况 | 奖励 |
+|---|---:|
+| 每走一步 | `-0.01` |
+| 进入一个没搜过的新格子 | `+0.05` |
+| 重复进入已经搜过的区域 | `-0.02` |
+| 动作角度大（相邻夹角60°~120°） | `-0.06` |
+| 动作快速大角度反向（相邻夹角120°~180°） | `-0.1` |
+| 靠近搜索边界 | `-0.15` |
+| 找到孔 | `+20` |
+| 最终完整装配成功 | `+100` |
+| 搜索越界 | `-5` |
+| 控制器严重故障 | `-30` |
+| 搜索超时 | `-10` |
+
+其中前后动作相邻夹角的惩罚是**分段互斥**的，否则容易导致惩罚过重。
+
+**（5）找到孔的判定依据**
+
+轴的尺寸：直径6mm，孔的尺寸：7mmX7mm方形。
+SAC不知道真实孔的位置，但是仿真环境知道真实孔的具体位置，判定依据如下：
+
+<div align="center">
+
+$$
+|Y-Y_{hole}|\le0.5mm
+$$
+
+$$
+|Z-Z_{hole}|\le0.5mm
+$$
+
+</div>
+
+其中$Y$、$Z$为轴心，$Y_{hole}$、$Z_{hole}$为孔心。当满足上述条件以后，判定为找到孔心，此时SAC不再控制机器人，进入INSERTING阶段，交回底层控制器负责后续插入。
+
+**SEARCHING阶段的MIT控制：**
+
+<div align="center">
+
+$$
+F_{yz} = m_{yz}\ddot{x}_{ref} + D_{yz} (\dot{x}_{ref}-\dot{x}) + K_{yz}(x_{ref}-x)
+$$
+
+</div>
+
+![alt text](fig/image-7.png)
+
+**v2版本：调整了速度阻尼dyz参数，调整为了50.0 N·s/m。**
+
+**v3版本：调整了速度阻尼dyz参数，调整为了70.0 N·s/m。**
+
+更底层的关节阻尼、关节刚度：
+```text
+joint_damping
+joint_stiffness
+```
+
+![alt text](fig/image-8.png)
+
+以及姿态控制：
+```text
+orientation_k: 30.0
+orientation_d: 8.0
+max_orientation_torque: 5.0
+```
+
+![alt text](fig/image-9.png)
+
+也就是说目前SEARCHING阶段的控制链：
+```text
+SAC action
+   ↓
+reference_yz
+   ↓
+Cartesian YZ 刚度/阻尼控制
+   ↓
+Jacobian 转换
+   ↓
+关节力矩
+   ↓
+机械臂真实运动
+```
+
+#### 阶段五：插入（INSERTING）
+
+当在SEARCHING阶段搜索到孔的位置后，**控制器就会将当前YZ方向坐标牢牢控制在孔中心**，然后在X方向上慢慢将轴插入。
+
+**（1）在YZ方向上**
+
+虽然在插入阶段，理论上是将机械臂的YZ方向坐标固定在孔中心，但是现实中插入阶段仍会有晃动，因此在YZ方向上会对机械臂进行控制。
+对机械臂在YZ方向上采用了**位置刚度**和**阻尼**进行控制：
+目前
+```text
+Y/Z位置刚度 = 900 N/m
+Y/Z阻尼 = 70 N·s/m
+```
+
+![alt text](fig\image-1.png)
+
+**v3版本：因为前面版本INSERTING阶段会偶发快速拉动一边的情况，因此v3讲速度阻尼dyz调整为110 N·s/m**
+
+
+**位置刚度：偏离孔中心以后，控制器有多强烈地把它拉回来**。位置刚度越大，偏1mm的拉回力就越大。但是并非越大越好，如果太大的话会纠偏很快，而且在数值/动力学上来不及跟上就容易振荡。
+**阻尼：给运动“踩刹车”**。
+因此刚度和阻尼有以下关系：
+```text
+刚度 K
+→ 决定“多想回到目标”
+
+阻尼 D
+→ 决定“回去的时候有多克制”
+
+K太大、D太小
+→ 特别容易抖
+
+K太小
+→ 软、跟踪慢
+
+D太大
+→ 动作迟钝
+```
+
+**（2）在X方向上**
+
+目标深度为17mm
+
+![alt text](fig\image-5.png)
+
+在插入时X方向的基础推力为1.2N，但是并非固定1.2N插入，加入了深度位置控制。
+
+![alt text](fig\image-3.png)
+
+在插入时会检查“目前已经插入多少”。如果距离目标很远则继续往里推；如果越来越接近17mm，推力逐渐调整；如果已经插得太深，则允许产生轻微反向力拉回来。
+目前该版本X方向上的深度控制参数：
+```text
+X深度刚度 = 600 N/m
+X深度阻尼 = 30 N·s/m
+```
+
+![alt text](fig\image-6.png)
+
+X方向上的深度刚度也不能过大，过大则容易插深差一点控制器就猛推，然后控制器又反拉，后面又猛推、反拉....，形成了前后振荡。
+因此**后续分析插入阶段晃动的原因时可以尝试调整YZ方向上的位置刚度、阻尼以及X方向上的深度刚度和深度阻尼**。
+
+除了在XYZ方向上的刚度、阻尼有设定以外，INSERTING阶段还在X方向上的插入力有**限幅
+保护**，即最大的X力限制在 $\pm{2.5N}$，YZ方向上的横向合力最大限制在 ${4N}$。
+
+**（3）插入完成的判定条件**
+
+插入完成要同时满足以下条件
+
+<div align="center">
+
+$$
+depth \ge 17mm
+$$
+
+$$
+最大关节速度 \leq 3 rad/s
+$$
+
+$$
+工具速度 \leq 0.25 m/s
+$$
+
+$$
+以上动作同时连续保持0.05 秒
+$$
+
+</div>
+
+只有**以上条件同时满足**了，才能从INSERTIN进入到INSERT_HOLDING状态。
+
+#### 阶段六：插入后保持（INSERT_HOLDING）
+
+此时机械臂会调用MIT算法系统锁定当前关节姿态，然后维持2秒。
+**此时会再做一次验收，确定最终是assembly_success还是insertion_failure**
+```text
+深度至少16.9mm
+轴的倾斜角必须小于等于1.5°
+轴尖的位置Y/Z每个方向距离孔壁至少小于等于0.5mm
+板面入口处必须还处于孔允许的范围内，整根轴进入板面的位置也不能斜得跑出孔
+```
+**以上条件全部满足**后，则判定为assembly_success，Episode结束；若以上条件不都全部满足，则判定为insertion_failure，Episode结束。
+
+**完整的一个Episode如下：**
+```text
+抽一个随机孔位置
+      ↓
+机械臂回到准备姿态
+      ↓
+等待机械臂稳定
+      ↓
+沿 X 方向慢慢顶向板面
+      ↓
+连续 0.2 s 确认已经接触板面
+      ↓
+进入 SEARCHING
+      ↓
+SAC 每 0.05 s 看一次当前状态
+      ↓
+输出 Y/Z 两维动作
+      ↓
+最大每轴移动 ±0.2 mm
+      ↓
+低层控制器以 500 Hz 追踪这个目标
+      ↓
+继续观察 → 再动作 → 再观察
+      ↓
+如果越界/超时 → 失败
+      ↓
+如果对准真实孔 → 找孔成功
+      ↓
+SAC停止工作
+      ↓
+规则控制器保持 Y/Z 孔中心
+同时沿 X 插入
+      ↓
+插到 17 mm 且稳定
+      ↓
+保持 2 秒
+      ↓
+检查深度、偏心、倾角
+      ↓
+成功 / 失败
+```
+
+**当前版本的SAC主要参数：**
+
+| 参数 | 当前值 | 你可以怎么理解 | 调大通常会怎样 |
+|---|---:|---|---|
+| `learning_rate` | 0.0003 | 学习步长 | 学更快，但更容易不稳定 |
+| `gamma` | 0.99 | 重视未来程度 | 更看重长期结果 |
+| `tau` | 0.005 | Target 网络追随速度 | Target 更新更快、稳定性可能下降 |
+| `batch_size` | 256 | 每次学习多少经验 | 梯度更平滑、计算更多 |
+| `buffer_size` | 1,000,000 | 经验池容量 | 保留更多历史经验 |
+| `learning_starts` | 5000 | 学习前先随机收集多少步 | 随机探索阶段更长 |
+| `train_freq` | 1 | 多久训练一次 | 数值变大后训练频率降低 |
+| `gradient_steps` | 1 | 每次训练几次 | 学得更密集，也更可能过拟合当前 buffer |
+| `ent_coef` | auto | 探索强度 | 当前自动学习 |
+| `target_entropy` | -2 | 希望保持的随机程度 | 会影响自动 α |
+| 网络 | 256×256 | 模型容量 | 更大能表达复杂策略，但训练更重 |
+
+**当前版本与SEARCHING阶段相关的参数：**
+
+| 参数 | 当前值 | 直接影响 |
+|---|---:|---|
+| SAC 动作周期 | 0.05 s | 每秒决定多少次 |
+| SAC 频率 | 20 Hz | 同上 |
+| 最大动作步长 | ±0.2 mm/轴 | 每次 reference 能跳多远 |
+| 搜索范围 | ±4 mm/轴 | 最大搜索区域 |
+| 最大搜索时间 | 20 s | 一回合允许搜索多久 |
+| 最大搜索步数 | 400 | SAC 最多行动几次 |
+| Y/Z 搜索刚度 | 80 N/m | 机械臂多积极追 SAC reference |
+| Y/Z 搜索阻尼 | 30 N·s/m | 追踪时抑制振荡 |
+| X 搜索推力 | 1 N | 轴压在板面的力度 |
+
+
+#### 启动仿真、训练、测试以及日志打包
+
+因为强化学习基于python语言，因此要**进入conda环境**中执行（conda环境已经配置好了相关的依赖，本工程创建的虚拟环境名为openarm，请自行创建）。
+```shell
+conda activate openarm
+source /opt/ros/humble/setup.bash
+source ~/openarm_ws/install/setup.bash
+cd ~/openarm_ws
+```
+**重新编译：**
+```shell
+conda activate openarm
+cd ~/openarm_ws
+
+colcon build --packages-select openarm_gazebo_hole_search
+
+source install/setup.bash
+```
+**终端 A 启动仿真：**
+```shell
 cd ~/openarm_ws
 source /opt/ros/humble/setup.bash
 source install/setup.bash
-ros2 launch openarm_gazebo_hole_search sac_hole_search_sim.launch.py rviz:=false
-```
 
-另开终端，进入 `openarm` Conda 环境后训练：
-
-```bash
-cd ~/openarm_ws/src/openarm_gazebo_hole_search_raw
-conda run -n openarm env PYTHONPATH=$PWD python scripts/train_sac.py
-```
-
-训练终端会逐回合打印编号、结果和结束原因；每 250 回合打印并保存检查点、
-验证指标和最新最佳模型来源。产物位置：`sac_results/models/`；TensorBoard
-日志位置：`sac_results/tensorboard/`。训练完成后以固定 200 孔测试：
-
-```bash
-conda run -n openarm env PYTHONPATH=$PWD python scripts/test_sac.py
-```
-
-This ROS 2 package simulates a right OpenArm performing a spiral search in the
-world YZ plane while applying a constant force along world X. Gazebo provides
-rigid-body dynamics and contact; RViz displays the robot, target point, tool
-point, force arrow, and controller state.
-
-The arm uses the same right-arm side-mount transform as the OpenArm v1
-description (`xyz="0 -0.031 0.698"`, `rpy="1.5708 0 0"`).
-
-## Build
-
-```bash
-cd ~/openarm_ros2_ws
-source /opt/ros/humble/setup.bash
-colcon build --packages-select openarm_description openarm_gazebo_hole_search \
-  --symlink-install
-source install/setup.bash
-```
-
-## Run
-
-```bash
-ros2 launch openarm_gazebo_hole_search hole_search_sim.launch.py
-```
-
-Disable RViz if only Gazebo is needed:
-
-```bash
-ros2 launch openarm_gazebo_hole_search hole_search_sim.launch.py rviz:=false
-```
-
-The controller starts after the model and controllers are spawned, holds the
-initial YZ point for 0.5 seconds, ramps the X force over one second, waits
-for confirmed tool contact, and then expands the YZ spiral. It publishes
-effort commands to:
-
-```text
-/arm_effort_controller/commands
-```
-
-Parameters are in `config/spiral_search.yaml`. The most relevant are `fx`,
-`r_max`, `r_rate`, `omega`, `kyz`, `dyz`, `max_x_travel`,
-`hole_entry_depth`, `insert_target_depth`, `insert_max_depth`, and
-`max_search_time`.
-
-The fixture consists of four collision boxes around a 7 mm square through
-hole, used as a conservative approximation of the approximately 7 mm circular
-lock hole. The simulated fixture and hole passage are 17 mm deep along X,
-matching the measured lock-hole depth. Its visuals are partially transparent
-so insertion can be inspected directly in Gazebo without changing the
-collision geometry. The search tool is a 6 mm diameter key/pin. After detecting hole entry, the
-simulation controller moves the YZ reference to the known hole center and
-inserts to `insert_target_depth`. It then captures all seven joint angles,
-removes the Cartesian search wrench, and remains in `INSERT_HOLDING` using
-MIT-equivalent joint torque control:
-`tau = ramp*Kp*(q_hold-q) - Kd*dq + gravity`.
-The target insertion depth must remain satisfied for
-`insert_hold_confirm_time` before the joint angles are captured. No 2 mm
-center-distance condition is required. The existing
-`hole_center_clearance` check only represents whether the 6 mm pin physically
-fits inside the 7 mm opening (0.5 mm center-position clearance); this prevents
-contact-solver penetration into the solid plate from being accepted as a
-successful insertion.
-The filtered joint and tool speeds must also be below
-`insert_hold_max_joint_velocity` and `insert_hold_max_tool_velocity` during
-that confirmation window. This captures the inserted pose after motion has
-settled instead of while the pin is still moving; it does not add a tighter
-YZ-position requirement.
-During insertion, `insert_dx` reduces the axial push when the pin moves into
-the hole too quickly and increases it during rebound, up to
-`max_insert_x_force`. The search phase still uses the configured constant
-world-X force.
-The position gain ramps in over `mit_hold_ramp_time`, and simulated joint
-velocity feedback is low-pass filtered by `mit_velocity_filter_tau`. Hold logs
-also report `inside_hole`; this is diagnostic only and is not an additional
-condition for entering joint hold. Its display uses
-`hole_inside_hysteresis` to avoid repeatedly toggling at the physical
-clearance boundary.
-To prevent a small joint-space error from becoming a large tool-tip motion,
-the simulation adds a bounded Cartesian restoring wrench around the captured
-inserted pose and maps it to MIT feed-forward joint torque. Its gains are
-`mit_hold_cartesian_kx`, `mit_hold_cartesian_dx`,
-`mit_hold_cartesian_kyz`, and `mit_hold_cartesian_dyz`.
-The supplied Gazebo gains are joint-side values and are therefore higher than
-the motor-side MIT gains used by the hardware executable; a direct numerical
-copy would omit the transmission's effective stiffness.
-`mit_hold_max_joint_error` and `mit_hold_max_joint_velocity` provide hold
-safety limits after the initial `mit_hold_safety_delay` braking window.
-Joint-limit violations must persist for `mit_hold_fault_confirm_time` before
-entering `FAULT`, so a single Gazebo contact-solver velocity spike does not
-trip the controller. It does not return to `INSERTING` when contact dynamics
-cause a transient depth error. The insertion phase uses stronger YZ centering gains
-(`insert_kyz`, `insert_dyz`, and `max_insert_yz_force`).
-X-travel and maximum insertion-depth protections remain active.
-
-The controller publishes a static `world -> hole_center` transform at the
-fixture front-face center. The supplied RViz configuration enables the TF
-display, so the hole coordinates and axes are visible directly.
-
-The alternate default test point places the hole approximately 1.65 mm along
--Y and 1.00 mm along +Z from the nominal initial tool axis, giving about
-1.93 mm total radial offset. This exercises both Y and Z search motion and
-leaves the pin about 1.43 mm outside the 0.5 mm effective insertion clearance,
-so the search starts near the hole without starting already inside it. The
-fixture front face has only about 0.05 mm nominal
-overlap with the initial tool-tip X. This is enough for Gazebo to report
-startup contact without the large contact impulse caused by the previous
-0.5 mm penetration. Because the physical clearance is small, the default
-spiral is limited to 4 mm and its radial growth is reduced
-to 0.2 mm/s; at 2 rad/s its turn-to-turn pitch is about 0.63 mm.
-The YZ search center remains the startup tool position after contact
-confirmation, rather than being recaptured from a contact-deflected sample.
-The supplied YZ and joint damping values are increased for the much tighter
-6/7 mm contact geometry. A bounded rotational impedance
-(`orientation_k`, `orientation_d`, and `max_orientation_torque`) also holds
-the startup tool orientation while approaching, searching, and inserting; this
-prevents the long pin from tilting and amplifying small joint motion into a
-large tip displacement.
-
-The 6 mm pin keeps its true visual size, while its rigid Gazebo collision is
-disabled. Plate contact is instead represented by a bounded virtual
-spring-damper using `virtual_contact_k`, `virtual_contact_d`, and
-`max_virtual_contact_force`. The reaction is active while the pin center is
-outside the 0.5 mm insertion clearance and is removed only when the pin is
-aligned with the hole. This hybrid model retains Gazebo joint dynamics and
-effort/MIT-style control, but avoids DART's unstable impulses at the sharp
-edges of a sub-millimetre clearance. Set `use_virtual_plate_contact` to
-`false` only if a different physical contact model is supplied.
-In virtual-contact mode, entering the physical 0.5 mm center clearance at the
-plate surface immediately starts `INSERTING`; requiring 3 mm depth before
-removing the virtual plate reaction would make insertion impossible.
-The default simulated X preload is 1 N. This is deliberately lower than the
-earlier 3 N setting because the zero-gravity Gazebo arm has much less passive
-dissipation than the real transmission; joint and Cartesian velocity damping
-are correspondingly higher.
-After hole alignment, `insert_fx` raises the axial insertion force to 2 N so
-the damped model can reach the measured 17 mm lock-hole depth. The independent
-`insert_max_depth` over-travel guard is 20 mm, leaving 3 mm of simulation
-safety margin beyond the nominal seated depth. Once alignment has been accepted,
-joint capture checks insertion depth and settling velocity but does not apply
-a second YZ-distance gate.
-The search-phase spring toward the initial joint posture is disabled only
-during `INSERTING`; otherwise it opposes the axial force and creates a false
-equilibrium after a few millimetres. Joint damping, YZ centering, tool
-orientation control, torque limits, travel protection, and depth protection
-remain active throughout insertion.
-For this simulation the OpenArm description macro is called with
-`joint_damping="2.0"`, so passive damping is evaluated synchronously by the
-Gazebo physics engine. The macro parameter defaults to zero, leaving all other
-OpenArm description users unchanged.
-
-Because this is a deterministic simulation, hole entry is confirmed from both
-the X insertion relative to the known fixture front surface
-(`hole_surface_x`) and the known hole-center clearance (`hole_center_y`,
-`hole_center_z`, and `hole_center_clearance`). This avoids treating a
-collision-rebound-dependent contact sample as the depth origin. On hardware,
-replace this geometric confirmation with the force/position signature from
-the real force sensor.
-
-The supplied world uses zero gravity so the arm cannot fall during the short
-gap between Gazebo controller activation and the controller's first effort
-message. Rigid-body inertia, collision, friction, and contact dynamics remain
-active. To experiment with gravity, set world gravity to `0 0 -9.81`, set
-`gravity_scale` to `1.0`, and add a position-hold startup controller before
-switching to effort control.
-
-## Safety and scope
-
-This package never opens a CAN interface. Its controller is simulation-only.
-The parameters are starting values for Gazebo and must not be copied directly
-to hardware without hardware-specific safety review.
-
-## SAC 实时日志与自动断点续训
-
-从功能包根目录使用以下脚本启动：
-
-```bash
+cd ~/openarm_ws/src/openarm_gazebo_hole_search_SAC
 bash scripts/run_sac_sim_logged.sh
+```
+**若要同时打开RViz模型，则运行以下仿真指令：**
+```shell
+conda activate openarm
+cd ~/openarm_ws
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+
+cd ~/openarm_ws/src/openarm_gazebo_hole_search_SAC
+bash scripts/run_sac_sim_logged.sh rviz:=true
+```
+**终端 B 开始正式训练：**
+```shell
+conda activate openarm
+cd ~/openarm_ws
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+
+cd ~/openarm_ws/src/openarm_gazebo_hole_search_SAC
 bash scripts/run_sac_training_logged.sh
 ```
+**终端B开始正式测试：**
+```shell
+conda activate openarm
+cd ~/openarm_ws
+source /opt/ros/humble/setup.bash
+source install/setup.bash
 
-日志分别实时写入：
+cd ~/openarm_ws/src/openarm_gazebo_hole_search_SAC
 
-```text
-sac_results/logs/simulation.log
-sac_results/logs/training.log
+conda run --no-capture-output -n openarm \
+env PYTHONPATH=$PWD \
+python -u scripts/test_sac.py
 ```
+**如果把测试终端输出也单独保存成日志：**
+```shell
+conda activate openarm
+cd ~/openarm_ws
+source /opt/ros/humble/setup.bash
+source install/setup.bash
 
-每次启动只清空对应的旧日志，不会删除模型、Replay Buffer、检查点或
-TensorBoard 数据。训练每 100 个完整 Episode 保存并在 30 个固定孔上验证。
-按一次 `Ctrl+C` 后，训练脚本会把最近完整 Episode 对应的模型、Replay Buffer、
-训练进度和配置保存到：
+cd ~/openarm_ws/src/openarm_gazebo_hole_search_SAC
 
-```text
-sac_results/models/interrupt_checkpoint
+conda run --no-capture-output -n openarm \
+env PYTHONPATH=$PWD \
+python -u scripts/test_sac.py 2>&1 | tee sac_results/logs/testing.log
 ```
+**只打包仿真、训练、测试日志：**
+```shell
+conda activate openarm
+cd ~/openarm_ws/src/openarm_gazebo_hole_search_SAC
 
-下一次运行训练启动脚本时，会自动比较周期检查点与中断检查点，从最新的兼容
-状态继续；若要从头训练，请先手动删除整个 `sac_results` 目录。
+tar -czf sac_logs_$(date +%Y%m%d_%H%M%S).tar.gz \
+sac_results/logs
+```
+**把日志 + 测试结果一起打包：**
+```shell
+conda activate openarm
+cd ~/openarm_ws/src/openarm_gazebo_hole_search_SAC
+
+tar -czf sac_debug_$(date +%Y%m%d_%H%M%S).tar.gz \
+sac_results/logs \
+sac_results/testing
+```
+**如果 sac_results/testing 还不存在，就先只打包日志：**
+```shell
+conda activate openarm
+tar -czf sac_logs_$(date +%Y%m%d_%H%M%S).tar.gz sac_results/logs
+```
+**查看详细action**
+```shell
+conda activate openarm
+cd ~/openarm_ws/src/openarm_gazebo_hole_search_SAC
+
+tail -f sac_results/logs/action.log
+```
