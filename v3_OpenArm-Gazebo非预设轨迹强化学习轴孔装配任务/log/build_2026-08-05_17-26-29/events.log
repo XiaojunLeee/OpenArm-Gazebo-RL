@@ -1,0 +1,61 @@
+[0.000000] (-) TimerEvent: {}
+[0.000058] (-) JobUnselected: {'identifier': 'openarm_teleop'}
+[0.000102] (openarm_description) JobQueued: {'identifier': 'openarm_description', 'dependencies': OrderedDict()}
+[0.000121] (openarm_gazebo_hole_search) JobQueued: {'identifier': 'openarm_gazebo_hole_search', 'dependencies': OrderedDict([('openarm_description', '/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/install/openarm_description')])}
+[0.000915] (openarm_description) JobStarted: {'identifier': 'openarm_description'}
+[0.010750] (openarm_description) JobProgress: {'identifier': 'openarm_description', 'progress': 'cmake'}
+[0.012477] (openarm_description) Command: {'cmd': ['/usr/bin/cmake', '/home/xiaojun/openarm_ws/src/openarm_description', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/install/openarm_description'], 'cwd': '/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/build/openarm_description', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('VSCODE_CWD', '/home/xiaojun'), ('VSCODE_ESM_ENTRYPOINT', 'vs/workbench/api/node/extensionHostProcess'), ('CONDA_PROMPT_MODIFIER', '(base)'), ('HTTPS_PROXY', 'http://192.168.138.1:10909'), ('CODEX_CI', '1'), ('LANGUAGE', 'en_US:'), ('USER', 'xiaojun'), ('LC_TIME', 'zh_CN.UTF-8'), ('CODEX_INTERNAL_ORIGINATOR_OVERRIDE', 'codex_vscode'), ('VSCODE_NLS_CONFIG', '{"userLocale":"zh-cn","osLocale":"en-us","resolvedLanguage":"zh-cn","defaultMessagesFile":"/usr/share/code/resources/app/out/nls.messages.json","languagePack":{"translationsConfigFile":"/home/xiaojun/.config/Code/clp/5b0b321b159f69c74a0e0361d5dec4ec.zh-cn/tcf.json","messagesFile":"/home/xiaojun/.config/Code/clp/5b0b321b159f69c74a0e0361d5dec4ec.zh-cn/125df4672b8a6a34975303c6b0baa124e560a4f7/nls.messages.json","corruptMarkerFile":"/home/xiaojun/.config/Code/clp/5b0b321b159f69c74a0e0361d5dec4ec.zh-cn/corrupted.info"},"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"5b0b321b159f69c74a0e0361d5dec4ec.zh-cn","_languagePackSupport":true,"_translationsConfigFile":"/home/xiaojun/.config/Code/clp/5b0b321b159f69c74a0e0361d5dec4ec.zh-cn/tcf.json","_cacheRoot":"/home/xiaojun/.config/Code/clp/5b0b321b159f69c74a0e0361d5dec4ec.zh-cn","_resolvedLanguagePackCoreLocation":"/home/xiaojun/.config/Code/clp/5b0b321b159f69c74a0e0361d5dec4ec.zh-cn/125df4672b8a6a34975303c6b0baa124e560a4f7","_corruptedFile":"/home/xiaojun/.config/Code/clp/5b0b321b159f69c74a0e0361d5dec4ec.zh-cn/corrupted.info"}'), ('VSCODE_HANDLES_UNCAUGHT_ERRORS', 'true'), ('XDG_SESSION_TYPE', 'wayland'), ('DEBUG', 'release'), ('SHLVL', '0'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/xiaojun'), ('CHROME_DESKTOP', 'code.desktop'), ('CONDA_SHLVL', '1'), ('DESKTOP_SESSION', 'ubuntu'), ('VSCODE_IPC_HOOK', '/run/user/1000/vscode-62d7fb15-1.12-main.sock'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/code.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('MANAGERPID', '1629'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '1797'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('_CONDA_ROOT', '/home/xiaojun/miniforge3'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '5236'), ('VSCODE_CRASH_REPORTER_PROCESS_TYPE', 'extensionHost'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('CODEX_PERMISSION_PROFILE', ':danger-full-access'), ('APPLICATION_INSIGHTS_NO_STATSBEAT', 'true'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'xiaojun'), ('JOURNAL_STREAM', '8:26092'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('RUST_LOG', 'warn'), ('USERNAME', 'xiaojun'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('FC_FONTATIONS', '1'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/xiaojun/.codex/tmp/arg0/codex-arg0c13okv:/home/xiaojun/miniforge3/bin:/home/xiaojun/miniforge3/condabin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/xiaojun/.vscode/extensions/openai.chatgpt-26.727.40816-linux-x64/bin/linux-x86_64'), ('SESSION_MANAGER', 'local/xiaojun-virtual-machine:@/tmp/.ICE-unix/1761,unix/xiaojun-virtual-machine:/tmp/.ICE-unix/1761'), ('INVOCATION_ID', 'e67a492e66b74567bf4ad8829832a749'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('GDK_BACKEND', 'wayland'), ('DISPLAY', ':0'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=ibus'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.O3VMT3'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('XML_CATALOG_FILES', 'file:///home/xiaojun/miniforge3/etc/xml/catalog file:///etc/xml/catalog'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('CONDA_PYTHON_EXE', '/home/xiaojun/miniforge3/bin/python'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('ELECTRON_RUN_AS_NODE', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CONDA_DEFAULT_ENV', 'base'), ('CODEX_THREAD_ID', '019fcf89-abfa-7940-a4ce-931f1301ce9e'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('_CONDA_EXE', '/home/xiaojun/miniforge3/bin/conda'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/build/openarm_description'), ('LC_ALL', 'C.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CONDA_EXE', '/home/xiaojun/miniforge3/bin/conda'), ('VSCODE_CODE_CACHE_PATH', '/home/xiaojun/.config/Code/CachedData/125df4672b8a6a34975303c6b0baa124e560a4f7'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://192.168.138.1:10909'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('CONDA_PREFIX', '/home/xiaojun/miniforge3'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('VSCODE_PID', '5236'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.100682] (-) TimerEvent: {}
+[0.201083] (-) TimerEvent: {}
+[0.301923] (-) TimerEvent: {}
+[0.313127] (openarm_description) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.402826] (-) TimerEvent: {}
+[0.495869] (openarm_description) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.502974] (-) TimerEvent: {}
+[0.518108] (openarm_description) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.603193] (-) TimerEvent: {}
+[0.655923] (openarm_description) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.663684] (openarm_description) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.664845] (openarm_description) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.665899] (openarm_description) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.670840] (openarm_description) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.703585] (-) TimerEvent: {}
+[0.784399] (openarm_description) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.791819] (openarm_description) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.792231] (openarm_description) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.792494] (openarm_description) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.803893] (-) TimerEvent: {}
+[0.821009] (openarm_description) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.904421] (-) TimerEvent: {}
+[1.005305] (-) TimerEvent: {}
+[1.105896] (-) TimerEvent: {}
+[1.206829] (-) TimerEvent: {}
+[1.307944] (-) TimerEvent: {}
+[1.372520] (openarm_description) StdoutLine: {'line': b'-- Found Python3: /home/xiaojun/miniforge3/bin/python3 (found version "3.13.13") found components: Interpreter \n'}
+[1.408850] (-) TimerEvent: {}
+[1.480959] (openarm_description) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[1.509098] (-) TimerEvent: {}
+[1.545560] (openarm_description) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[1.577178] (openarm_description) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[1.580257] (openarm_description) StderrLine: {'line': b'  File "/opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 22, in <module>\n'}
+[1.580449] (openarm_description) StderrLine: {'line': b'    from catkin_pkg.package import parse_package_string\n'}
+[1.580520] (openarm_description) StderrLine: {'line': b"ModuleNotFoundError: No module named 'catkin_pkg'\n"}
+[1.586331] (openarm_description) StderrLine: {'line': b'CMake Error at /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:95 (message):\n'}
+[1.586495] (openarm_description) StderrLine: {'line': b'  execute_process(/home/xiaojun/miniforge3/bin/python3\n'}
+[1.586548] (openarm_description) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py\n'}
+[1.586593] (openarm_description) StderrLine: {'line': b'  /home/xiaojun/openarm_ws/src/openarm_description/package.xml\n'}
+[1.586635] (openarm_description) StderrLine: {'line': b'  /home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/build/openarm_description/ament_cmake_core/package.cmake)\n'}
+[1.586746] (openarm_description) StderrLine: {'line': b'  returned error code 1\n'}
+[1.586794] (openarm_description) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[1.586944] (openarm_description) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:49 (_ament_package_xml)\n'}
+[1.587018] (openarm_description) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_find_test_dependencies.cmake:31 (ament_package_xml)\n'}
+[1.587064] (openarm_description) StderrLine: {'line': b'  CMakeLists.txt:29 (ament_lint_auto_find_test_dependencies)\n'}
+[1.587136] (openarm_description) StderrLine: {'line': b'\n'}
+[1.587214] (openarm_description) StderrLine: {'line': b'\n'}
+[1.587495] (openarm_description) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[1.587634] (openarm_description) StdoutLine: {'line': b'See also "/home/xiaojun/openarm_ws/src/openarm_gazebo_hole_search_raw/build/openarm_description/CMakeFiles/CMakeOutput.log".\n'}
+[1.596011] (openarm_description) CommandEnded: {'returncode': 1}
+[1.609350] (-) TimerEvent: {}
+[1.622996] (openarm_description) JobEnded: {'identifier': 'openarm_description', 'rc': 1}
+[1.633827] (openarm_gazebo_hole_search) JobSkipped: {'identifier': 'openarm_gazebo_hole_search'}
+[1.633903] (-) EventReactorShutdown: {}

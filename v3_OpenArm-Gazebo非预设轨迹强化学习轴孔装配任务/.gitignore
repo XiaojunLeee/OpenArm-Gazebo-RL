@@ -1,0 +1,30 @@
+# ROS2 build files
+build/
+install/
+log/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.swp
+*~
+.DS_Store
+
+# Training logs
+sac_results/logs/
+sac_results/tensorboard/
+
+# Large replay buffers
+replay_buffer.pkl
+
+# Compressed backup files
+*.tar
+*.tar.gz
+*.zip

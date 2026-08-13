@@ -1,0 +1,54 @@
+# [OpenArm-v1 参数说明补丁：0.025 mm SAC 搜索步长]
+# SAC 神经网络、经验回放、训练/验证流程及 ROS 等待超时参数。
+# 说明：除 sac_search.yaml 的 sac_action_step 外，本补丁仅添加注释，不改变现有参数值。
+
+# SAC V1 冻结超参数。此文件与模型、日志和检查点一起复制保存，便于复现。
+sac:
+  # SAC 使用的策略类型；当前配置写为 MlpPolicy。注意当前训练代码实际构造模型时硬编码了 MlpPolicy。
+  policy: MlpPolicy
+  # Actor/Critic 使用的隐藏层结构；[256, 256] 表示两层、每层 256 个神经元。
+  net_arch: [256, 256]
+  # 配置中声明的激活函数。注意当前代码未显式把该字段传入 policy_kwargs，单独修改它可能不会改变实际模型。
+  activation: ReLU
+  # 神经网络学习率；过大容易训练震荡，过小会使学习变慢。
+  learning_rate: 0.0003
+  # 折扣因子；越接近 1 越重视未来奖励，0.99 表示明显考虑长期找孔/装配结果。
+  gamma: 0.99
+  # Target Critic 的软更新系数；0.005 表示每次只缓慢追随在线 Critic。
+  tau: 0.005
+  # 每次梯度更新从 Replay Buffer 随机采样的 transition 数量。
+  batch_size: 256
+  # Replay Buffer 最多保存的 transition 数量。
+  buffer_size: 1000000
+  # 正式进行 SAC 网络学习前先收集的环境 step 数；5000 指 step，不是 Episode。
+  learning_starts: 3000
+  # 每收集多少条新的环境 transition 触发一次训练；1 表示每一步都可触发。
+  train_freq: 1
+  # 每次触发训练时执行多少次梯度更新。
+  gradient_steps: 1
+  # Target Network 的更新间隔；与 tau 共同决定目标网络跟随速度。
+  target_update_interval: 1
+  # 熵系数 alpha 的设置；auto 表示由 SAC 自动学习探索强度。
+  ent_coef: auto
+  # 自动调节熵系数时使用的目标熵；二维动作空间当前设置为 -2。
+  target_entropy: -2
+  # 神经网络运行设备；auto 通常在可用时选 GPU，否则使用 CPU。
+  device: auto
+
+run:
+  # 正式训练的 Episode 总数。
+  training_episodes: 1000       # 冻结训练回合数。
+  # 每训练多少个 Episode 运行一次固定验证集；100 表示每 100 Episode 验证一次。
+  validation_interval: 100      # 每 100 个实际完成的训练回合保存检查点并验证。
+  # 训练模型、checkpoint、TensorBoard、验证/测试结果等产物的根目录。
+  artifact_root: sac_results    # 相对包根目录的训练产物目录。
+  # 当前 Episode 连续这么久收不到状态心跳，才认为 Gazebo/控制器失联。
+  # 连续收不到当前 Episode 控制器状态消息时允许等待的墙钟时间，单位 s；不是某个装配阶段必须在此时间内结束。
+  ros_response_timeout_s: 30.0
+  # reset 包含关节复位、板面重建、HOLDING 和 APPROACHING，使用独立总时限。
+  # 一个 Episode reset 流程允许等待的最大墙钟时间，单位 s。
+  ros_reset_timeout_s: 180.0
+  # <=0 表示 INSERTING/INSERT_HOLDING 不设墙钟总时限，只监视心跳；
+  # 控制器内部 insertion_timeout 仍按仿真时间负责结束异常插入。
+  # 环境等待终止状态的额外墙钟超时；0 表示关闭该额外限制，控制器自身插入超时仍有效。
+  ros_terminal_timeout_s: 0.0

@@ -1,0 +1,29 @@
+"""V1 冻结奖励的无 ROS 纯函数。"""
+
+from __future__ import annotations
+
+import numpy as np
+
+
+def is_reverse_action(action: np.ndarray, previous_action: np.ndarray) -> bool:
+    """仅在两个动作模长都大于 0.2 且夹角余弦小于 -0.5 时判为反向。"""
+    current = np.asarray(action, dtype=np.float64)
+    previous = np.asarray(previous_action, dtype=np.float64)
+    current_norm, previous_norm = np.linalg.norm(current), np.linalg.norm(previous)
+    return bool(current_norm > 0.2 and previous_norm > 0.2 and (
+        np.dot(current, previous) / (current_norm * previous_norm)) < -0.5)
+
+
+def search_step_reward(cell_event: str, action: np.ndarray, previous_action: np.ndarray,
+                       near_boundary: bool) -> float:
+    """计算一个非终止 SAC 搜索步的冻结奖励。"""
+    reward = -0.01
+    if cell_event == 'new':
+        reward += 0.05
+    elif cell_event == 'revisit':
+        reward -= 0.02
+    if is_reverse_action(action, previous_action):
+        reward -= 0.10
+    if near_boundary:
+        reward -= 0.15
+    return reward

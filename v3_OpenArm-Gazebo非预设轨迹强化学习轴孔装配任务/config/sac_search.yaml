@@ -1,0 +1,206 @@
+# [OpenArm-v1 参数说明补丁：0.025 mm SAC 搜索步长]
+# SAC 非预设轨迹轴孔搜索/插入控制参数。当前 SAC 搜索步长改为 0.025 mm/step；最大搜索步数保持原值。
+# 说明：除 sac_search.yaml 的 sac_action_step 外，本补丁仅添加注释，不改变现有参数值。
+
+rl_hole_search_controller:
+  ros__parameters:
+    # 原规则控制参数：与 spiral_search.yaml 数值一致，SAC 不修改它们。
+    # 是否使用 Gazebo /clock 仿真时间；true 表示控制、超时和状态机均按仿真时间推进。
+    use_sim_time: true
+    # 底层机械臂控制频率，单位 Hz；500 Hz 即每 2 ms 计算并发送一次关节 effort。
+    control_rate: 500.0
+    # 机器人进入准备阶段后等待多少秒再开始向板面靠近，用于让仿真和机械臂先稳定。
+    start_delay: 5.0
+    # 传统螺旋搜索允许达到的最大半径，单位 m；0.004 m = 4 mm。
+    r_max: 0.004
+    # 传统螺旋搜索半径随时间增加的速度，单位 m/s。
+    r_rate: 0.0002
+    # 传统螺旋搜索角速度，单位 rad/s；仅用于预设螺旋轨迹。
+    omega: 2.0
+    # SEARCHING 阶段 Y/Z 笛卡尔控制中的等效质量/参考加速度前馈系数。
+    myz: 0.5
+    # SEARCHING 阶段 Y/Z 位置刚度，单位 N/m；越大追踪 reference 越强，过大可能引起振荡。
+    kyz: 80.0
+    # SEARCHING 阶段 Y/Z 速度阻尼，单位 N·s/m；用于抑制横向速度和振荡，过大会使响应变迟钝。
+    dyz: 70.0
+    # 靠近板面和搜索阶段的 X 方向目标推力，单位 N。
+    fx: 1.0
+    # SEARCHING 阶段允许的最大 Y/Z 合力，单位 N，用于横向力限幅保护。
+    max_yz_force: 4.0
+    # 对孔姿态控制：单位分别为 N*m/rad、N*m*s/rad、N*m。
+    # 复位姿态已对正孔轴；该增益用于抵抗插入期间的机构耦合倾斜。
+    # 工具姿态误差的比例增益；越大越强地保持装配轴朝向。
+    orientation_k: 30.0
+    # 工具角速度阻尼增益；用于抑制姿态调整过程中的转动振荡。
+    orientation_d: 8.0
+    # 姿态保持允许输出的最大修正力矩，单位 N·m。
+    max_orientation_torque: 5.0
+    # 是否启用虚拟板面接触模型；当前任务主要通过虚拟弹簧-阻尼反力表示板面接触。
+    use_virtual_plate_contact: true
+    # 虚拟板面的弹簧刚度，单位 N/m；穿入虚拟板面越深，反力越大。
+    virtual_contact_k: 1000.0
+    # 虚拟板面的速度阻尼，单位 N·s/m；用于抑制轴向接触冲击。
+    virtual_contact_d: 20.0
+    # 虚拟板面反力的最大限幅，单位 N。
+    max_virtual_contact_force: 3.0
+    # 虚拟接触判定的几何容差，单位 m；0.0002 m = 0.2 mm。
+    virtual_contact_tolerance: 0.0002
+    # 7 个关节的软件力矩上限，单位 N·m；最终 effort 会受此数组限幅。
+    max_joint_torque: [40.0, 40.0, 27.0, 27.0, 7.0, 7.0, 7.0]
+    # 重力补偿项的缩放系数；当前 Gazebo world 为零重力时通常保持 0。
+    gravity_scale: 0.0
+    # 7 个关节的软件速度阻尼系数；用于抑制关节速度和高频振荡。
+    joint_damping: [2.0, 2.0, 1.5, 1.5, 0.5, 0.5, 0.4]
+    # 非插入阶段用于限制关节偏离初始姿态的弱位置刚度数组。
+    joint_stiffness: [4.0, 4.0, 3.0, 3.0, 1.0, 1.0, 0.5]
+    # 父控制器传统搜索阶段允许的最长时间，单位 s；SAC 搜索另受 sac_max_search_time 限制。
+    max_search_time: 30.0
+    # 靠近板面阶段最长允许时间，单位 s；超时仍未稳定接触会进入故障处理。
+    approach_timeout: 12.0
+    # 板面接触必须连续成立的确认时间，单位 s；500 Hz 下 0.20 s 约等于 100 个连续控制周期。
+    contact_confirm_time: 0.20
+    # 工具沿 X 方向允许的最大总位移，单位 m，用于防止异常过度推进。
+    max_x_travel: 0.035
+    # 传统孔入口逻辑使用的插入深度阈值，单位 m。
+    hole_entry_depth: 0.003
+    # 默认孔中心的世界坐标 Y；SAC 每个 Episode reset 时会根据数据集更新实际孔中心。
+    hole_center_y: -0.43800
+    # 默认孔中心的世界坐标 Z；SAC 每个 Episode reset 时会根据数据集更新实际孔中心。
+    hole_center_z: 0.57242
+    # 判断工具处于孔中心允许区域时的单轴 Y/Z 容差，单位 m；0.0005 m = ±0.5 mm。
+    hole_center_clearance: 0.0005
+    # 孔内/孔外判定的迟滞量，单位 m；用于减少边界附近反复切换。
+    hole_inside_hysteresis: 0.00015
+    # 板面/孔入口平面的世界坐标 X，单位 m。
+    hole_surface_x: 0.32370
+    # 目标装配插入深度，单位 m；0.017 m = 17 mm。
+    insert_target_depth: 0.017
+    # INSERTING 专用：降低轴向力，避免 X 向推力通过机构耦合把轴挤离孔心。
+    # 单位 N。由原来的 2.0 N 调为 1.2 N。
+    # 插入阶段的基础 X 方向推进力，单位 N。
+    insert_fx: 1.2
+    # 达到插入深度并满足稳定条件后，需要连续保持多久才进入 INSERT_HOLDING，单位 s。
+    insert_hold_confirm_time: 0.05
+    # 插入阶段速度低通滤波时间常数，单位 s；越大滤波更平滑但延迟更明显。
+    insert_velocity_filter_tau: 0.05
+    # 接近 17 mm 后的 X 向深度位置刚度/速度阻尼，单位 N/m、N*s/m。
+    # X 方向插入深度闭环的位置刚度，单位 N/m；深度误差越大，产生的轴向修正力越大。
+    insert_depth_kx: 600.0
+    # X 方向插入深度闭环的速度阻尼，单位 N·s/m；用于抑制深度过冲和前后振荡。
+    insert_depth_dx: 30.0
+    # 深度伺服参考比 17 mm 多 0.3 mm；成功门槛仍严格是 17 mm。
+    # 深度控制参考点相对正式目标额外增加的余量，单位 m；0.0003 m = 0.3 mm。
+    insert_depth_reference_margin: 0.0003
+    # 判定插入稳定时允许的最大关节速度，单位 rad/s。
+    insert_hold_max_joint_velocity: 3.0
+    # 判定插入稳定时允许的最大工具线速度，单位 m/s。
+    insert_hold_max_tool_velocity: 0.25
+    # 安全允许的最大插入深度，单位 m，用于防止异常过插。
+    insert_max_depth: 0.020
+    # INSERTING 专用横向位置刚度/速度阻尼；单位分别为 N/m、N*s/m。
+    # 仅在插入阶段提高，以便在轴向推进时仍能维持孔心每轴 ±0.5 mm。
+    # 插入阶段 Y/Z 位置刚度，单位 N/m；用于把轴保持在孔中心附近。
+    insert_kyz: 900.0
+    # 插入阶段 Y/Z 速度阻尼，单位 N·s/m；用于抑制插入时横向振荡。
+    insert_dyz: 110.0
+    # 插入阶段基础轴向速度阻尼系数，用于根据 X 方向速度修正推进力。
+    insert_dx: 10.0
+    # 插入阶段 X 方向力的最大幅值，单位 N。
+    max_insert_x_force: 2.5
+    # 插入阶段 Y/Z 合力的最大幅值，单位 N。
+    max_insert_yz_force: 4.0
+    # INSERT_HOLDING 阶段 7 个关节的位置增益数组，用于锁定插入后的关节姿态。
+    mit_hold_kp: [30.0, 30.0, 30.0, 30.0, 20.0, 20.0, 15.0]
+    # INSERT_HOLDING 阶段 7 个关节的速度阻尼增益数组，用于抑制关节振荡。
+    mit_hold_kd: [1.5, 1.5, 1.5, 1.5, 0.5, 0.5, 0.3]
+    # 进入 MIT hold 后关节保持力矩从小到目标值的渐增时间，单位 s。
+    mit_hold_ramp_time: 0.3
+    # 进入 hold 后延迟多少秒再启用相关安全判断，单位 s。
+    mit_hold_safety_delay: 2.0
+    # MIT hold 使用的关节速度低通滤波时间常数，单位 s。
+    mit_velocity_filter_tau: 0.02
+    # hold 状态允许的最大关节位置误差，单位 rad。
+    mit_hold_max_joint_error: 0.30
+    # hold 状态允许的最大关节速度，单位 rad/s。
+    mit_hold_max_joint_velocity: 5.0
+    # hold 安全阈值持续超限多少秒后才确认 FAULT，单位 s。
+    mit_hold_fault_confirm_time: 0.25
+    # hold 状态 X 方向笛卡尔位置刚度，单位 N/m。
+    mit_hold_cartesian_kx: 180.0
+    # hold 状态 X 方向笛卡尔速度阻尼，单位 N·s/m。
+    mit_hold_cartesian_dx: 25.0
+    # 保持阶段继续使用与插入阶段相同量级的横向对中能力。
+    # hold 状态 Y/Z 笛卡尔位置刚度，单位 N/m。
+    mit_hold_cartesian_kyz: 900.0
+    # hold 状态 Y/Z 笛卡尔速度阻尼，单位 N·s/m。
+    mit_hold_cartesian_dyz: 70.0
+    # hold 状态允许的最大笛卡尔修正力，单位 N。
+    mit_hold_max_cartesian_force: 4.0
+    # 搜索/装配工具尖端使用的 TF 坐标系名称。
+    tool_frame: openarm_right_search_tool_tip
+    # 世界参考坐标系名称。
+    world_frame: world
+    # 孔中心参考坐标系名称。
+    hole_frame: hole_center
+
+    # V1 冻结的 SAC 搜索接口；单位均为 m 或仿真秒。
+    # SAC 产生一次新搜索动作的周期，单位 s；0.05 s 对应 20 Hz。
+    sac_action_period: 0.10       # 10 Hz 策略周期，每 0.10 s 应用一次 SAC 动作。
+    # SAC 单次动作在 Y/Z 每个方向可改变 reference 的最大距离，单位 m；
+    sac_action_step: 0.00005    # 每轴动作最大映射为 0.05 mm。
+    # SAC 相对搜索起点在 Y/Z 每个轴允许的最大搜索范围，单位 m；0.004 m = ±4 mm。
+    sac_search_half_range: 0.004  # 搜索范围每轴 ±4 mm。
+    # SAC SEARCHING 阶段最长允许仿真时间，单位 s。
+    sac_max_search_time: 40.0     # 最大 SEARCHING 时间，单位仿真秒。
+    # SAC SEARCHING 阶段最大动作次数；当前应保持 400，配合 0.05 s 周期约等于 20 s。
+    sac_max_steps: 400            # 最大 SAC 搜索动作步数；10 Hz × 40 s = 400 步。
+    # 进入 INSERT_HOLDING 后继续稳定保持多久再做最终装配验收，单位 s。
+    sac_holding_duration: 2.0     # 进入保持后成功所需可见时长，单位仿真秒。
+    # 6 mm 轴插入 7 mm 方孔、深度 17 mm 时的轴线倾角验收上限。
+    # 1.5 deg 可保证倾斜造成的横向位移小于约 0.45 mm。
+    # 最终装配验收允许的最大轴倾角，单位 degree。
+    insertion_max_tilt_deg: 1.5
+    # 最终插入深度验收容差，单位 m；0.0001 m = 0.1 mm。
+    insertion_depth_tolerance: 0.0001 # 深度验收数值容差，单位 m（0.1 mm）。
+    # 找孔后规则控制器完成深度伺服与严格对中所需的最长时间，单位仿真秒。
+    # 插入阶段允许的最大仿真时间，单位 s；超时则终止该 Episode。
+    insertion_timeout: 60.0
+    # 每个 Episode 完成关节复位后额外等待的稳定时间，单位 s。
+    reset_settle_time: 0.75       # 受控关节复位后最少稳定等待，单位仿真秒。
+    # 逆运动学求得的对孔复位姿态，单位 rad。与原复位姿态的轴尖位置相同，
+    # 但工具局部 +Z 轴与孔的世界 +X 轴对齐，避免以约 15 deg 倾角硬插。
+    # 每个 Episode reset 时 7 个关节的目标角度数组；补丁只加注释，不修改现有数值。
+    reset_joint_positions: [0.079866760, 1.132669807, -0.046520126, 1.107354402, -0.026191662, 0.016393745, 0.430011105]
+    # reset 阶段 7 个关节的位置 PD 增益数组；补丁只加注释，不修改现有数值。
+    reset_joint_kp: [30.0, 30.0, 30.0, 30.0, 20.0, 20.0, 15.0] # N*m/rad。
+    # reset 阶段 7 个关节的速度 PD 增益数组；补丁只加注释，不修改现有数值。
+    reset_joint_kd: [2.0, 2.0, 1.5, 1.5, 0.5, 0.5, 0.4] # N*m*s/rad。
+    # 每回合删除并重建四块板：外边界保持固定，只改变真实深方孔位置。
+    # Gazebo 中动态孔板/孔夹具模型的实体名称。
+    fixture_model_name: hole_fixture
+    # 动态孔板模型中心的世界坐标 X，单位 m。
+    fixture_center_x: 0.33220     # 板中心 X，单位 m；前表面为0.32370 m。
+    # 孔板默认中心的世界坐标 Y，单位 m。
+    board_center_y: -0.43800      # 固定板中心 Y，单位 m。
+    # 孔板默认中心的世界坐标 Z，单位 m。
+    board_center_z: 0.57242       # 固定板中心 Z，单位 m。
+    # 孔板在 Y 方向的总尺寸，单位 m。
+    board_size_y: 0.340           # 固定板 Y 向宽度，单位 m。
+    # 孔板在 Z 方向的总尺寸，单位 m。
+    board_size_z: 0.620           # 固定板 Z 向高度，单位 m。
+    # 孔板沿 X 方向的厚度，单位 m。
+    board_depth_x: 0.017          # 板厚/方孔深度，单位 m。
+    # 方形孔在 Y/Z 方向的尺寸，单位 m；0.007 m = 7 mm。
+    hole_size_yz: 0.007           # 方孔 Y、Z 边长，单位 m。
+    # Gazebo 可视化中孔板的透明度设置。
+    board_transparency: 0.65      # 0不透明、1完全透明。
+    # Gazebo world 名称，用于动态删除/创建孔板实体等服务。
+    world_name: hole_search
+    # 控制器向强化学习环境发布 SAC 状态的周期，单位 s。
+    sac_state_publish_period: 0.05
+    # 强化学习环境向控制器发送二维 SAC 动作的 ROS 话题名称。
+    action_topic: /sac_hole_search/action
+    # 强化学习环境向控制器发送 Episode/reset 命令的 ROS 话题名称。
+    command_topic: /sac_hole_search/episode_command
+    # 控制器向强化学习环境返回状态 JSON 的 ROS 话题名称。
+    state_topic: /sac_hole_search/state

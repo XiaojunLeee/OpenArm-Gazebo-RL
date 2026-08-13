@@ -1,0 +1,9 @@
+{
+  "resume_format_version": 1,
+  "training_episode": 16,
+  "last_validated_episode": 0,
+  "total_env_steps": 1880,
+  "reason": "keyboard_interrupt",
+  "saved_at_unix": 1786614003.7334735,
+  "saved_at_local": "2026-08-13T17:40:03+0800"
+}
