@@ -23,5 +23,5 @@ SAC算法植入SEARCHING阶段，可以跑通，参数未优化。
 
 （2）优化SAC的Reward函数，进一步优化机械臂SEARCHING阶段的抖动情况；
 
-![search_hole_v3](fig/search_hole_v3.gif)
+![search_hole_v3](.fig/search_hole_v3.gif)
 
