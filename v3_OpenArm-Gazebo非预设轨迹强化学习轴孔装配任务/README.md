@@ -71,7 +71,7 @@ $F=Kx+Dv$
 ```
 当在某一个控制周期（控制器500Hz）内被判断“连续触碰0.2秒”，则可以认为已经到了板面，APPROACHING状态结束。
 
-![alt text](.fig\image.png)
+![alt text](v3_OpenArm-Gazebo非预设轨迹强化学习轴孔装配任务/fig/image.png)
 
 若一直在APPROACHING阶段超过12秒还没进入下一阶段，则进入FAULT。
 
