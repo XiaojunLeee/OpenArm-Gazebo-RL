@@ -25,3 +25,7 @@ SAC算法植入SEARCHING阶段，可以跑通，参数未优化。
 
 ![search_hole_v3](.fig/search_hole_v3.gif)
 
+<p align="center">
+  <img src="./fig/earch_hole_v3.gif" width="700">
+</p>
+
