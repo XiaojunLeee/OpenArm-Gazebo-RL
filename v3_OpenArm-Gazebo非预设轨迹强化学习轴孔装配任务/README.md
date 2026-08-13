@@ -71,7 +71,7 @@ $F=Kx+Dv$
 ```
 当在某一个控制周期（控制器500Hz）内被判断“连续触碰0.2秒”，则可以认为已经到了板面，APPROACHING状态结束。
 
-![alt text](v3_OpenArm-Gazebo非预设轨迹强化学习轴孔装配任务/fig/image.png)
+![alt text](image.png)
 
 若一直在APPROACHING阶段超过12秒还没进入下一阶段，则进入FAULT。
 
@@ -323,7 +323,7 @@ $$
 
 </div>
 
-![alt text](.fig/image-7.png)
+![alt text](image-7.png)
 
 **v2版本：调整了速度阻尼dyz参数，调整为了50.0 N·s/m。**
 
@@ -335,7 +335,7 @@ joint_damping
 joint_stiffness
 ```
 
-![alt text](.fig/image-8.png)
+![alt text](image-8.png)
 
 以及姿态控制：
 ```text
@@ -344,7 +344,7 @@ orientation_d: 8.0
 max_orientation_torque: 5.0
 ```
 
-![alt text](.fig/image-9.png)
+![alt text](image-9.png)
 
 也就是说目前SEARCHING阶段的控制链：
 ```text
@@ -375,7 +375,7 @@ Y/Z位置刚度 = 900 N/m
 Y/Z阻尼 = 70 N·s/m
 ```
 
-![alt text](.fig\image-1.png)
+![alt text](image-1.png)
 
 **v3版本：因为前面版本INSERTING阶段会偶发快速拉动一边的情况，因此v3讲速度阻尼dyz调整为110 N·s/m**
 
@@ -404,11 +404,11 @@ D太大
 
 目标深度为17mm
 
-![alt text](.fig\image-5.png)
+![alt text](image-5.png)
 
 在插入时X方向的基础推力为1.2N，但是并非固定1.2N插入，加入了深度位置控制。
 
-![alt text](.fig\image-3.png)
+![alt text](image-3.png)
 
 在插入时会检查“目前已经插入多少”。如果距离目标很远则继续往里推；如果越来越接近17mm，推力逐渐调整；如果已经插得太深，则允许产生轻微反向力拉回来。
 目前该版本X方向上的深度控制参数：
@@ -417,7 +417,7 @@ X深度刚度 = 600 N/m
 X深度阻尼 = 30 N·s/m
 ```
 
-![alt text](fig\image-6.png)
+![alt text](image-6.png)
 
 X方向上的深度刚度也不能过大，过大则容易插深差一点控制器就猛推，然后控制器又反拉，后面又猛推、反拉....，形成了前后振荡。
 因此**后续分析插入阶段晃动的原因时可以尝试调整YZ方向上的位置刚度、阻尼以及X方向上的深度刚度和深度阻尼**。
