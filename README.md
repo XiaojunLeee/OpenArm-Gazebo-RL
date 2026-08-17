@@ -19,9 +19,9 @@ SAC算法植入SEARCHING阶段，可以跑通，参数未优化。
 
 #### 2026.8.13v3版本贡献：
 
-（1）[README](https://github.com/XiaojunLeee/OpenArm-Gazebo-RL-Guideline/blob/main/v2_OpenArm-Gazebo%E9%9D%9E%E9%A2%84%E8%AE%BE%E8%BD%A8%E8%BF%B9%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%BD%B4%E5%AD%94%E8%A3%85%E9%85%8D%E4%BB%BB%E5%8A%A1/README.md)文件针对action日志进行了相关的说明；
+（1）[README](https://github.com/XiaojunLeee/OpenArm-Gazebo-RL-Guideline/blob/main/v3_OpenArm-Gazebo%E9%9D%9E%E9%A2%84%E8%AE%BE%E8%BD%A8%E8%BF%B9%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E8%BD%B4%E5%AD%94%E8%A3%85%E9%85%8D%E4%BB%BB%E5%8A%A1/README.md)文件针对action日志进行了相关的说明；
 
-（2）优化SAC的Reward函数，进一步优化机械臂SEARCHING阶段的抖动情况；
+（2）优化SAC的Reward函数和SEARCHING、INSERTING阶段的速度阻尼，进一步优化机械臂SEARCHING阶段的抖动情况；
 
 ![search_hole_v3](fig/search_hole_v3.gif)
 
