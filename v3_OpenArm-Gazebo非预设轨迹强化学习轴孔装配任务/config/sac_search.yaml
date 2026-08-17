@@ -22,7 +22,7 @@ rl_hole_search_controller:
     # SEARCHING 阶段 Y/Z 位置刚度，单位 N/m；越大追踪 reference 越强，过大可能引起振荡。
     kyz: 80.0
     # SEARCHING 阶段 Y/Z 速度阻尼，单位 N·s/m；用于抑制横向速度和振荡，过大会使响应变迟钝。
-    dyz: 70.0
+    dyz: 80.0
     # 靠近板面和搜索阶段的 X 方向目标推力，单位 N。
     fx: 1.0
     # SEARCHING 阶段允许的最大 Y/Z 合力，单位 N，用于横向力限幅保护。
@@ -102,7 +102,7 @@ rl_hole_search_controller:
     # 插入阶段 Y/Z 位置刚度，单位 N/m；用于把轴保持在孔中心附近。
     insert_kyz: 900.0
     # 插入阶段 Y/Z 速度阻尼，单位 N·s/m；用于抑制插入时横向振荡。
-    insert_dyz: 110.0
+    insert_dyz: 150.0
     # 插入阶段基础轴向速度阻尼系数，用于根据 X 方向速度修正推进力。
     insert_dx: 10.0
     # 插入阶段 X 方向力的最大幅值，单位 N。
@@ -133,7 +133,7 @@ rl_hole_search_controller:
     # hold 状态 Y/Z 笛卡尔位置刚度，单位 N/m。
     mit_hold_cartesian_kyz: 900.0
     # hold 状态 Y/Z 笛卡尔速度阻尼，单位 N·s/m。
-    mit_hold_cartesian_dyz: 70.0
+    mit_hold_cartesian_dyz: 130.0
     # hold 状态允许的最大笛卡尔修正力，单位 N。
     mit_hold_max_cartesian_force: 4.0
     # 搜索/装配工具尖端使用的 TF 坐标系名称。
